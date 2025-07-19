@@ -60,6 +60,12 @@
       "icons/Square248x248Logo.png",
       "icons/Square310x310Logo.png",
       "icons/StoreLogo.png"
-    ]
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "embedBootstrapper",
+        "silent": true
+      }
+    }
   }
 }
