@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1024 1024">
+  <defs>
+    <radialGradient id="radial-gradient" cx="-157.55" cy="38.13" fx="-157.55" fy="38.13" r="144.61" gradientTransform="translate(862.52 412.13) scale(1.65)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8bd2e6"/>
+      <stop offset=".21" stop-color="#8cd1e4"/>
+      <stop offset=".28" stop-color="#93d1e0"/>
+      <stop offset=".34" stop-color="#9fd0d8"/>
+      <stop offset=".38" stop-color="#b0cfcc"/>
+      <stop offset=".42" stop-color="#c6cebd"/>
+      <stop offset=".45" stop-color="#e0ccab"/>
+      <stop offset=".47" stop-color="#ffcb97"/>
+      <stop offset=".52" stop-color="#f2cb9f"/>
+      <stop offset=".74" stop-color="#bacfc5"/>
+      <stop offset=".91" stop-color="#98d1dd"/>
+      <stop offset="1" stop-color="#8bd2e6"/>
+    </radialGradient>
+    <linearGradient id="linear-gradient" x1="129.04" y1="512" x2="394.68" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#9c99eb"/>
+      <stop offset="1" stop-color="#8bd2e6"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="489.36" y1="919.99" x2="560.09" y2="663.25" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a5f590"/>
+      <stop offset="1" stop-color="#8bd2e6"/>
+    </linearGradient>
+  </defs>
+  <g id="Layer_1" data-name="Layer 1">
+    <circle cx="512" cy="512" r="382.96" fill="#fff" stroke-width="0"/>
+    <g>
+      <path d="m364.26,176.71v472.35c0,35.35,28.65,64,64,64h400.65c5.62,0,10.89-2.91,13.73-7.76,33.25-56.74,52.32-122.79,52.32-193.3,0-211.5-171.46-382.96-382.96-382.96-49.7,0-94.32,8.27-137.48,25.33-6.13,2.42-10.21,8.28-10.25,14.87-.01,2.52-.01,5.04-.01,7.48Z" fill="url(#radial-gradient)" stroke-width="0"/>
+      <path d="m254.77,788.93V228.29c-77.23,70.06-125.73,171.22-125.73,283.71s48.5,213.64,125.73,283.71v-6.78Z" fill="url(#linear-gradient)" stroke-width="0"/>
+      <path d="m310.68,837.81c58.5,36.22,127.46,57.15,201.32,57.15s142.82-20.93,201.32-57.15h-402.63Z" fill="url(#linear-gradient-2)" stroke-width="0"/>
+    </g>
+  </g>
+  <g id="Layer_2" data-name="Layer 2">
+    <g>
+      <circle cx="601.18" cy="476.28" r="177.59" fill="#ffcb97" stroke-width="0"/>
+      <polygon points="689.97 387.48 571.58 446.68 512.38 565.07 630.78 505.87 689.97 387.48" fill="#fff" stroke-width="0"/>
+    </g>
+  </g>
+</svg>

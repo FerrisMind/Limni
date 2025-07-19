@@ -32,11 +32,22 @@
     "active": true,
     "targets": "all",
     "icon": [
-      "icons/32x32.png",
-      "icons/128x128.png",
-      "icons/128x128@2x.png",
-      "icons/icon.icns",
-      "icons/icon.ico"
+      "icons/limni.ico",
+      "icons/limni.svg",
+      "icons/limni.icns",
+      "icons/limni-icon_32x32.png",
+      "icons/limni-icon_128x128.png",
+      "icons/limni-icon_128x128@2x.png",
+      "icons/limni-icon_Square30x30Logo.png",
+      "icons/limni-icon_Square44x44Logo.png",
+      "icons/limni-icon_Square71x71Logo.png",
+      "icons/limni-icon_Square89x89Logo.png",
+      "icons/limni-icon_Square107x107Logo.png",
+      "icons/limni-icon_Square142x142Logo.png",
+      "icons/limni-icon_Square150x150Logo.png",
+      "icons/limni-icon_Square248x248Logo.png",
+      "icons/limni-icon_Square310x310Logo.png",
+      "icons/limni-icon_StoreLogo.png"
     ]
   }
 }
