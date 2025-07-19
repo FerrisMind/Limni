@@ -1,7 +1,7 @@
 {
-  "name": "limni-browser",
+  "name": "Limni",
   "version": "0.1.0",
-  "description": "Modern desktop web browser built with Tauri v2 and Svelte 5",
+  "description": "Limni - Desktop application for internet exploration with Tauri v2 and Svelte 5",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
