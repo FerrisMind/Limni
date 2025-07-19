@@ -1,0 +1,58 @@
+Limni Attribution License (LAL)
+
+Copyright (c) 2024-2025 Limni Project Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+MANDATORY ATTRIBUTION REQUIREMENTS:
+1. The above copyright notice and this permission notice shall be included in 
+   ALL copies or substantial portions of the Software.
+
+2. Any distribution, modification, or derivative work of this Software MUST 
+   prominently display the following attribution:
+   "Powered by Limni - Created by FerrisMind"
+   
+3. The attribution must be visible to end users in at least ONE of the following ways:
+   - In the application's "About" section or credits
+   - In the application's main interface (footer, header, or startup screen)
+   - In the documentation or README file if the Software is used as a library
+   - In the source code header comments if distributed as source code
+
+4. If the Software is modified or used as a component in another project, 
+   the attribution must include a link to the original Limni project 
+   repository: https://github.com/FerrisMind/Limni
+
+5. Commercial use is permitted but requires the same attribution requirements.
+   The attribution cannot be removed, obscured, or made less prominent than 
+   other software credits in the same application.
+
+6. Any marketing materials, app store descriptions, or public announcements 
+   that mention the use of this Software should acknowledge Limni as a 
+   component or inspiration.
+
+ADDITIONAL TERMS:
+- This license does not grant permission to use the name "Limni" or 
+  the names of its contributors to endorse or promote products derived 
+  from this software without specific prior written permission.
+
+- Derivative works must use a different name and clearly indicate they 
+  are "based on Limni" rather than being the original Limni.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+Note: This license is designed to be similar to MIT but with stronger 
+attribution requirements to ensure proper credit to the original developers.
+If you have questions about compliance, please contact the project maintainers. 
