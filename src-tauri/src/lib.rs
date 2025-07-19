@@ -260,8 +260,9 @@ async fn create_tab_webview(
                         if url_str != "about:blank" && url_str.starts_with("http") {
                             let app_clone_favicon = app_clone.clone();
                             let tab_id_favicon = tab_id_clone_inner.clone();
+                            let url_for_favicon = url_str.clone();
                             tauri::async_runtime::spawn(async move {
-                                match fetch_favicon_backend(url_str).await {
+                                match fetch_favicon_backend(url_for_favicon).await {
                                     Ok(favicon_data) => {
                                         let _ = app_clone_favicon.emit("webview-favicon-changed", serde_json::json!({
                                             "tabId": tab_id_favicon,
@@ -274,6 +275,27 @@ async fn create_tab_webview(
                                             "tabId": tab_id_favicon,
                                             "favicon": null
                                         }));
+                                    }
+                                }
+                            });
+                        }
+
+                        // Асинхронно получаем реальный заголовок страницы и обновляем вкладку
+                        if url_str != "about:blank" && url_str.starts_with("http") {
+                            let app_clone_title_real = app_clone.clone();
+                            let tab_id_title_real = tab_id_clone_inner.clone();
+                            let url_for_title = url_str.clone();
+                            tauri::async_runtime::spawn(async move {
+                                match fetch_page_title_backend(url_for_title).await {
+                                    Ok(real_title) => {
+                                        let _ = app_clone_title_real.emit("webview-title-changed", serde_json::json!({
+                                            "tabId": tab_id_title_real,
+                                            "title": real_title
+                                        }));
+                                        println!("🦀 Rust: Real title set to '{}' for tab: {}", real_title, tab_id_title_real);
+                                    },
+                                    Err(err) => {
+                                        println!("🦀 Rust: Failed to fetch page title: {}", err);
                                     }
                                 }
                             });
@@ -565,6 +587,48 @@ async fn fetch_favicon_backend(url: String) -> Result<String, String> {
     } else {
         Err("Failed to fetch favicon.".to_string())
     }
+}
+
+// Utility: Fetch real <title> of a page for more accurate tab titles
+async fn fetch_page_title_backend(url: String) -> Result<String, String> {
+    // Only handle http/https URLs for now
+    if !url.starts_with("http") {
+        return Err("Unsupported URL scheme".to_string());
+    }
+
+    let client = Client::new();
+    let response = client
+        .get(&url)
+        .send()
+        .await
+        .map_err(|e| format!("Request error: {}", e))?;
+
+    let body = response
+        .text()
+        .await
+        .map_err(|e| format!("Body read error: {}", e))?;
+
+    // Extract <title> tag contents using a simple regex
+    use regex::Regex;
+    let re = Regex::new(r"(?is)<title[^>]*>(.*?)</title>")
+        .map_err(|e| format!("Regex error: {}", e))?;
+
+    if let Some(caps) = re.captures(&body) {
+        let title = caps.get(1).unwrap().as_str().trim();
+        if !title.is_empty() {
+            return Ok(title.to_string());
+        }
+    }
+
+    // Fallback: return the domain name if title not found
+    if let Ok(parsed_url) = url::Url::parse(&url) {
+        return Ok(parsed_url
+            .host_str()
+            .unwrap_or("Новая вкладка")
+            .to_string());
+    }
+
+    Err("Unable to determine title".to_string())
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
