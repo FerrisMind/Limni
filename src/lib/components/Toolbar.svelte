@@ -80,6 +80,22 @@
     browserState.showSettings = false;
   }
 
+  function toggleBookmarks() {
+    browserState.showBookmarks = !browserState.showBookmarks;
+    browserState.showDownloads = false;
+    browserState.showExtensions = false;
+    browserState.showHistory = false;
+    browserState.showSettings = false;
+  }
+
+  function toggleHistory() {
+    browserState.showHistory = !browserState.showHistory;
+    browserState.showBookmarks = false;
+    browserState.showDownloads = false;
+    browserState.showExtensions = false;
+    browserState.showSettings = false;
+  }
+
   function toggleMenu() {
     // Открываем/закрываем выпадающее меню
     browserState.showMainMenu = !browserState.showMainMenu;
@@ -222,16 +238,27 @@
   <!-- Правая секция: Расширения, Загрузки, Меню -->
   <div class="right-section">
     <div class="action-controls">
+      <!-- Кнопка закладок -->
       <button 
         class="action-btn"
-        class:active={browserState.showExtensions}
-        onclick={toggleExtensions}
-        title="Расширения"
-        aria-label="Расширения"
+        class:active={browserState.showBookmarks}
+        onclick={toggleBookmarks}
+        title="Закладки"
+        aria-label="Закладки"
       >
-        <i class="ph ph-puzzle-piece"></i>
+        <i class="ph ph-star"></i>
       </button>
-      
+      <!-- Кнопка истории -->
+      <button 
+        class="action-btn"
+        class:active={browserState.showHistory}
+        onclick={toggleHistory}
+        title="История"
+        aria-label="История"
+      >
+        <i class="ph ph-clock-clockwise"></i>
+      </button>
+      <!-- Кнопка загрузок -->
       <button 
         class="action-btn"
         class:active={browserState.showDownloads}
@@ -241,47 +268,36 @@
       >
         <i class="ph ph-download-simple"></i>
       </button>
-      
+      <!-- Меню -->
       <div class="menu-container">
         <button 
           class="action-btn menu-burger"
           class:active={browserState.showMainMenu}
           onclick={toggleMenu}
-          title="Меню"
-          aria-label="Меню"
+          title="Настройки"
+          aria-label="Настройки"
         >
-          <i class="ph ph-list"></i>
+          <i class="ph ph-gear"></i>
         </button>
-
         {#if browserState.showMainMenu}
           <div class="main-menu-dropdown">
             <button class="menu-item" onclick={openSettings}>
               <i class="ph ph-gear"></i>
               <span>Настройки</span>
             </button>
-            
             <button class="menu-item" onclick={openHistory}>
               <i class="ph ph-clock-clockwise"></i>
               <span>История</span>
             </button>
-            
-            <button class="menu-item" onclick={openExtensions}>
-              <i class="ph ph-puzzle-piece"></i>
-              <span>Расширения</span>
-            </button>
-            
             <button class="menu-item" onclick={openBookmarks}>
               <i class="ph ph-star"></i>
               <span>Закладки</span>
             </button>
-            
             <button class="menu-item" onclick={openDownloads}>
               <i class="ph ph-download-simple"></i>
               <span>Загрузки</span>
             </button>
-            
             <div class="menu-separator"></div>
-            
             <button class="menu-item" onclick={showAbout}>
               <i class="ph ph-info"></i>
               <span>О приложении</span>

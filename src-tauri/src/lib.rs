@@ -15,13 +15,13 @@ struct WebviewState {
 // TabBar + WindowControls (44px) + Toolbar (44px) = 88.0px
 const HEADER_HEIGHT: f64 = 89.0;
 
-// Команда для создания нового встроенного webview для вкладки
+// Команда для создания нового CHILD webview для вкладки (embedded, ниже UI)
 #[tauri::command]
 async fn create_tab_webview(
     app: AppHandle,
     tab_id: String,
     url: String,
-    _title: String, // Префикс _ чтобы убрать warning о неиспользуемой переменной
+    _title: String,
 ) -> Result<String, String> {
     let webview_label = format!("tab-{}", tab_id);
     
@@ -40,29 +40,33 @@ async fn create_tab_webview(
         WebviewUrl::App("index.html".into())
     };
     
-    // Создаем webview builder с правильными настройками
+    // КЛЮЧЕВОЕ ОТЛИЧИЕ: создаем CHILD WebView, который будет ниже UI
     let webview_builder = WebviewBuilder::new(webview_label.clone(), webview_url)
         .auto_resize() // Автоматически изменяет размер при изменении окна
-        .transparent(false) // Убираем прозрачность для избежания проблем с рендерингом
+        .transparent(false) // Убираем прозрачность
+        .focused(false) // Child WebView не должен получать фокус автоматически
         .initialization_script("
-            // Скрываем горизонтальную прокрутку если не нужна
+            // Child WebView инициализация
             document.addEventListener('DOMContentLoaded', function() {
                 document.body.style.margin = '0';
                 document.body.style.padding = '0';
+                // Child WebView автоматически ниже UI родителя
             });
         ");
     
-    // Позиционируем под UI панелями с правильной высотой
+    // Позиционируем под header панелями
     let position = Position::Logical(LogicalPosition::new(0.0, HEADER_HEIGHT));
     let size = Size::Logical(LogicalSize::new(
         window_size.width as f64, 
         window_size.height as f64 - HEADER_HEIGHT
     ));
     
+    // КРИТИЧЕСКИ ВАЖНО: используем add_child для создания embedded WebView
+    // Child WebView автоматически ниже UI родительского окна
     let webview = main_window.add_child(webview_builder, position, size)
-        .map_err(|e| format!("Failed to create webview: {}", e))?;
+        .map_err(|e| format!("Failed to create child webview: {}", e))?;
     
-    // Скрываем webview по умолчанию
+    // Скрываем webview по умолчанию (но он останется ниже UI)
     webview.hide().map_err(|e| format!("Failed to hide webview: {}", e))?;
     
     // Сохраняем ссылку на webview
@@ -82,10 +86,12 @@ async fn show_tab_webview(
     let state = app.state::<WebviewState>();
     let webviews = state.webviews.lock().unwrap();
     
-    // ВСЕГДА скрываем все webview'ы сначала
-    for webview_label in webviews.values() {
-        if let Some(webview) = app.get_webview(webview_label) {
-            let _ = webview.hide(); // Игнорируем ошибки при скрытии
+    // Скрываем только ДРУГИЕ webview'ы (не активный)
+    for (other_tab_id, webview_label) in webviews.iter() {
+        if other_tab_id != &tab_id {
+            if let Some(webview) = app.get_webview(webview_label) {
+                let _ = webview.hide(); // Скрываем неактивные WebView
+            }
         }
     }
     
@@ -252,7 +258,7 @@ pub fn run() {
             close_tab_webview,
             navigate_webview,
             get_webview_info,
-            fetch_favicon_backend // Добавляем новую команду
+            fetch_favicon_backend
         ])
         .setup(|app| {
             // Добавляем обработчик изменения размера окна для правильного позиционирования webview'ов
