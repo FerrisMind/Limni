@@ -47,6 +47,16 @@ function isGenericTitle(title: string | undefined, url: string | undefined): boo
   return false;
 }
 
+// 👉 Utility to decode HTML entities which come from fallback JS (&#1040; etc.)
+function decodeHtmlEntities(str: string | undefined): string {
+  if (!str) return '';
+  // Fast check: if no entity marker, return as is
+  if (!/&[#a-zA-Z0-9]+;/.test(str)) return str;
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = str;
+  return textarea.value;
+}
+
 function isLoadingPlaceholder(title: string | undefined): boolean {
   if (!title) return false;
   const trimmed = title.trim();
@@ -483,13 +493,14 @@ listen<{tabId: string, url: string, title: string, webviewLabel: string}>('new-t
 listen<{tabId: string, title: string}>('webview-title-changed', (event) => {
   console.log('🔍 Title event received:', event.payload);
   const { tabId, title } = event.payload;
+  const decoded = decodeHtmlEntities(title);
   const tab = browserState.tabs.find(t => t.id === tabId);
   console.log('🔍 Found tab:', tab ? `${tab.id} - current title: "${tab.title}"` : 'NOT FOUND');
-  console.log('🔍 New title:', title);
+  console.log('🔍 Raw title:', title, 'Decoded:', decoded);
 
   if (!tab) return; // safety guard
 
-  const newIsGeneric = isGenericTitle(title, tab.url);
+  const newIsGeneric = isGenericTitle(decoded, tab.url);
   const currentIsGeneric = isGenericTitle(tab.title, tab.url);
   const currentIsLoading = isLoadingPlaceholder(tab.title);
 
@@ -503,15 +514,15 @@ listen<{tabId: string, title: string}>('webview-title-changed', (event) => {
 
   // Otherwise prefer longer / more descriptive titles
   const shouldUpdate =
-    title &&
-    title.trim() &&
-    title !== 'undefined' &&
-    title !== 'null' &&
-    (currentIsLoading || currentIsGeneric || title.length >= tab.title.length);
+    decoded &&
+    decoded.trim() &&
+    decoded !== 'undefined' &&
+    decoded !== 'null' &&
+    (currentIsLoading || currentIsGeneric || decoded.length >= tab.title.length);
 
   if (shouldUpdate) {
-    console.log('🔍 Updating title from', tab.title, 'to', title);
-    tab.title = title;
+    console.log('🔍 Updating title from', tab.title, 'to', decoded);
+    tab.title = decoded;
 
     // Останавливаться будем позже, когда придёт фавикон
   } else {
