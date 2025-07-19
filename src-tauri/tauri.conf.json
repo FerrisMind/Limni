@@ -25,7 +25,15 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": {
+        "default-src": "'self' 'unsafe-inline' data: blob: asset: https: http: tauri:",
+        "connect-src": "ipc: http://ipc.localhost wss: ws: https: http: tauri:",
+        "script-src": "'self' 'unsafe-inline' 'unsafe-eval' https: http:",
+        "style-src": "'self' 'unsafe-inline' https: http:",
+        "img-src": "'self' data: blob: asset: https: http:",
+        "font-src": "'self' https: http: data:",
+        "media-src": "'self' https: http: data: blob:"
+      }
     }
   },
   "bundle": {

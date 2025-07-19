@@ -11,6 +11,7 @@
   }
 
   function getTabTitle(title: string): string {
+    console.log('🎯 TabBar rendering title:', title);
     if (title.length > 16) { /* Уменьшаем с 20 до 16 символов */
       return title.substring(0, 16) + '...';
     }
@@ -31,7 +32,7 @@
         >
           <div class="tab-content">
             {#if tab.isLoading}
-              <i class="ph ph-arrow-clockwise tab-icon loading"></i>
+              <i class="ph ph-circle-notch tab-icon loading"></i>
             {:else if tab.favicon}
               <img src={tab.favicon} alt="Favicon" class="tab-favicon" onerror={event => { (event.currentTarget as HTMLImageElement).onerror = null; (event.currentTarget as HTMLImageElement).src = ''; }} />
             {:else if tab.webviewLabel}

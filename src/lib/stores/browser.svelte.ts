@@ -1,5 +1,6 @@
 import type { Tab, BrowserState, Bookmark, HistoryEntry, BrowserSettings } from '../types/browser.js';
 import { invoke } from '@tauri-apps/api/core';
+import { listen } from '@tauri-apps/api/event';
 
 // Генерация уникального ID
 function generateId(): string {
@@ -381,3 +382,89 @@ export function canGoForward(tabId: string): boolean {
 if (browserState.tabs.length === 0) {
   addTab('about:blank', 'Новая вкладка');
 } 
+
+// Настройка обработчика событий изменения URL в webview
+listen<{tabId: string, url: string}>('webview-url-changed', (event) => {
+  const { tabId, url } = event.payload;
+  const tab = browserState.tabs.find(t => t.id === tabId);
+  if (tab) {
+    tab.url = url;
+    tab.isLoading = false;
+    
+    // Обновляем историю вкладки если URL изменился
+    if (tab.history[tab.historyIndex] !== url) {
+      tab.history = tab.history.slice(0, tab.historyIndex + 1);
+      tab.history.push(url);
+      tab.historyIndex = tab.history.length - 1;
+    }
+    
+    // Добавляем в глобальную историю если это не about:blank
+    if (url !== 'about:blank') {
+      addToHistory(tab.title, url);
+    }
+  }
+});
+
+// Обработка создания новых вкладок из webview
+listen<{tabId: string, url: string, title: string, webviewLabel: string}>('new-tab-created', (event) => {
+  const { tabId, url, title, webviewLabel } = event.payload;
+  
+  // Создаем новую вкладку с полученными данными
+  const newTab: Tab = {
+    id: tabId,
+    title: title,
+    url: url,
+    isActive: false,
+    isLoading: true,
+    favicon: undefined,
+    history: [url],
+    historyIndex: 0,
+    webviewLabel: webviewLabel
+  };
+  
+  browserState.tabs.push(newTab);
+  setActiveTab(tabId); // Переключаемся на новую вкладку
+  
+  // Добавляем в историю
+  if (url !== 'about:blank') {
+    addToHistory(title, url);
+  }
+}); 
+
+// Настройка обработчика событий изменения title в webview
+listen<{tabId: string, title: string}>('webview-title-changed', (event) => {
+  console.log('🔍 Title event received:', event.payload);
+  const { tabId, title } = event.payload;
+  const tab = browserState.tabs.find(t => t.id === tabId);
+  console.log('🔍 Found tab:', tab ? `${tab.id} - current title: "${tab.title}"` : 'NOT FOUND');
+  console.log('🔍 New title:', title);
+  console.log('🔍 Title conditions:', {
+    hasTab: !!tab,
+    hasTitle: !!title,
+    notDefaultTitle1: title !== 'Без названия',
+    notDefaultTitle2: title !== 'Новая вкладка'
+  });
+  
+  // Временно упрощаем условие для отладки
+  if (tab && title && title.trim() && title !== 'undefined' && title !== 'null') {
+    console.log('🔍 Updating title from', tab.title, 'to', title);
+    tab.title = title;
+    console.log('🔍 Title updated, new value:', tab.title);
+    
+    // Обновляем историю с новым title если URL не about:blank
+    if (tab.url !== 'about:blank') {
+      addToHistory(title, tab.url);
+    }
+  } else {
+    console.log('🔍 Title update skipped due to conditions');
+  }
+}); 
+
+// Настройка обработчика событий изменения favicon в webview
+listen<{tabId: string, favicon: string | null}>('webview-favicon-changed', (event) => {
+  const { tabId, favicon } = event.payload;
+  const tab = browserState.tabs.find(t => t.id === tabId);
+  if (tab) {
+    tab.favicon = favicon || undefined;
+  }
+}); 

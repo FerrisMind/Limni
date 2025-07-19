@@ -16,8 +16,14 @@
   // Отслеживаем активную вкладку
   $effect(() => {
     currentTab = getActiveTab();
+  });
+  
+  // Отслеживаем URL активной вкладки
+  $effect(() => {
     if (currentTab) {
       addressBarUrl = currentTab.url === 'about:blank' ? '' : currentTab.url;
+    } else {
+      addressBarUrl = '';
     }
   });
 
@@ -599,6 +605,4 @@
     background: var(--border-color);
     margin: 8px 12px;
   }
-
-  /* Закрытие меню при клике вне */
 </style> 
