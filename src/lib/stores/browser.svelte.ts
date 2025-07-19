@@ -437,7 +437,7 @@ listen<{tabId: string, url: string}>('webview-url-changed', (event) => {
   const tab = browserState.tabs.find(t => t.id === tabId);
   if (tab) {
     tab.url = url;
-    tab.isLoading = false;
+    // Не сбрасываем isLoading здесь – ждём favicon
     
     // Обновляем историю вкладки если URL изменился
     if (tab.history[tab.historyIndex] !== url) {
@@ -513,11 +513,10 @@ listen<{tabId: string, title: string}>('webview-title-changed', (event) => {
     console.log('🔍 Updating title from', tab.title, 'to', title);
     tab.title = title;
 
-    if (tab.url !== 'about:blank') {
-      addToHistory(title, tab.url);
-    }
+    // Останавливаться будем позже, когда придёт фавикон
   } else {
     console.log('🔍 Title update skipped by heuristics');
+    // Загрузка продолжается до получения favicon
   }
 }); 
 
@@ -527,5 +526,9 @@ listen<{tabId: string, favicon: string | null}>('webview-favicon-changed', (even
   const tab = browserState.tabs.find(t => t.id === tabId);
   if (tab) {
     tab.favicon = favicon || undefined;
+    // Если фавиконка получена, считаем загрузку завершённой
+    if (favicon) {
+      tab.isLoading = false;
+    }
   }
 }); 
