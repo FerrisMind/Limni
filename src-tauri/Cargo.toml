@@ -1,0 +1,33 @@
+[package]
+name = "Limni"
+version = "0.1.0"
+description = "Limni - Desktop application for internet exploration with Tauri v2 and Svelte 5"
+authors = ["FerrisMind"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# The `_lib` suffix may seem redundant but it is necessary
+# to make the lib name unique and wouldn't conflict with the bin name.
+# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
+name = "limni_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["unstable"] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+reqwest = { version = "0.12", features = ["json"] }
+base64 = "0.22"
+url = "2.5.4"
+tokio = { version = "1", features = ["time", "macros", "rt-multi-thread"] }
+regex = "1"
+
+[dev-dependencies]
+tokio-test = "0.4"
+

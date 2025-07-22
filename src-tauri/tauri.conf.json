@@ -1,0 +1,72 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Limni",
+  "version": "0.1.0",
+  "identifier": "com.limni.browser",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Limni",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 600,
+        "resizable": true,
+        "decorations": false,
+        "transparent": false,
+        "titleBarStyle": "Overlay",
+        "dragDropEnabled": false
+      }
+    ],
+    "security": {
+      "csp": {
+        "default-src": "'self' 'unsafe-inline' data: blob: asset: https: http: tauri:",
+        "connect-src": "ipc: http://ipc.localhost wss: ws: https: http: tauri:",
+        "script-src": "'self' 'unsafe-inline' 'unsafe-eval' https: http:",
+        "style-src": "'self' 'unsafe-inline' https: http:",
+        "img-src": "'self' data: blob: asset: https: http:",
+        "font-src": "'self' https: http: data:",
+        "media-src": "'self' https: http: data: blob:"
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "icon": [
+      "icons/icon.ico",
+      "icons/icon.png",
+      "icons/icon.icns",
+      "icons/16x16.png",
+      "icons/24x24.png",
+      "icons/32x32.png",
+      "icons/48x48.png",
+      "icons/64x64.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/Square30x30Logo.png",
+      "icons/Square44x44Logo.png",
+      "icons/Square71x71Logo.png",
+      "icons/Square89x89Logo.png",
+      "icons/Square107x107Logo.png",
+      "icons/Square142x142Logo.png",
+      "icons/Square150x150Logo.png",
+      "icons/Square248x248Logo.png",
+      "icons/Square310x310Logo.png",
+      "icons/StoreLogo.png"
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "embedBootstrapper",
+        "silent": true
+      },
+      "nsis": {}
+    }
+  }
+}

@@ -1,0 +1,35 @@
+# Build outputs
+build/
+dist/
+.svelte-kit/
+node_modules/
+
+# Tauri
+src-tauri/target/
+src-tauri/gen/
+
+# Documentation
+docs/
+
+# Config files
+*.config.js
+*.config.ts
+vite.config.js
+svelte.config.js
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+Cargo.lock
+
+# Generated files
+*.d.ts
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
