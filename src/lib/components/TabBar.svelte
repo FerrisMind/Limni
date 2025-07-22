@@ -1,4 +1,8 @@
+<!-- src/lib/components/TabBar.svelte -->
 <script lang="ts">
+  /// <reference types="svelte" />
+  /// <reference types="vite/client" />
+
   import {
     browserState,
     setActiveTab,
@@ -11,12 +15,12 @@
     await setActiveTab(tabId);
   }
 
-  async function handleTabClose(event: Event, tabId: string) {
+  async function handleTabClose(event: MouseEvent, tabId: string) {
     event.stopPropagation();
     await closeTab(tabId);
   }
 
-  async function handleAudioToggle(event: Event, tabId: string) {
+  async function handleAudioToggle(event: MouseEvent, tabId: string) {
     event.stopPropagation();
     await toggleTabAudio(tabId);
   }
@@ -46,7 +50,7 @@
         <button
           class="tab"
           onclick={() => handleTabClick(tab.id)}
-          onmousedown={(e) => {
+          onmousedown={(e: MouseEvent) => {
             if (e.button === 1) { // 1 for middle click
               e.preventDefault();
               e.stopPropagation();
@@ -65,7 +69,7 @@
                   src={tab.favicon}
                   alt="Favicon"
                   class="tab-favicon"
-                  onerror={(event) => {
+                  onerror={(event: Event) => {
                     (event.currentTarget as HTMLImageElement).onerror = null;
                     (event.currentTarget as HTMLImageElement).src = '';
                   }}
@@ -127,11 +131,11 @@
     display: flex;
     align-items: center;
     height: 44px; /* Высота таббара */
-    background-color: var(--color-tab-bar-bg);
+    background-color: var(--bg-primary);
     padding-right: 8px; /* Отступ справа для кнопки "+" */
     gap: 2px;
     overflow: hidden;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--border-color);
 
     .tabs-scrollable {
       display: flex;
@@ -151,11 +155,11 @@
       align-items: center;
       padding: 0 4px; /* Отступы вокруг кнопки закрытия и иконки звука */
       height: 100%;
-      border-right: 1px solid var(--color-tab-bar-border);
+      border-right: 1px solid var(--border-color);
 
       &.active {
-        background-color: var(--color-tab-active-bg);
-        border-bottom: 2px solid var(--color-primary); /* Акцент для активной вкладки */
+        background-color: var(--bg-secondary);
+        border-bottom: 2px solid var(--accent-color); /* Акцент для активной вкладки */
         margin-bottom: -1px; /* Компенсируем границу */
       }
     }
@@ -169,16 +173,16 @@
       background: none;
       border: none;
       cursor: pointer;
-      color: var(--color-text);
+      color: var(--text-primary);
       font-size: 14px;
       user-select: none;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 200px; /* Ограничение ширины таба */
+      max-width: 304px; /* Ограничение ширины таба */
 
       &:hover {
-        background-color: var(--color-tab-hover-bg);
+        background-color: var(--btn-bg-hover);
       }
 
       .tab-content {
@@ -219,14 +223,14 @@
       background: none;
       border: none;
       cursor: pointer;
-      color: var(--color-text-light);
+      color: var(--text-secondary);
       font-size: 14px;
       padding: 4px;
       border-radius: 4px;
       margin-left: -4px; /* Смещаем ближе к тексту */
 
       &:hover {
-        background-color: var(--color-button-hover-bg);
+        background-color: var(--btn-bg-hover);
       }
     }
 
@@ -234,14 +238,14 @@
       background: none;
       border: none;
       cursor: pointer;
-      color: var(--color-text-light);
+      color: var(--text-secondary);
       font-size: 14px;
       padding: 4px;
       border-radius: 4px;
       margin-left: 4px; /* Отступ от заголовка */
 
       &:hover {
-        background-color: var(--color-button-hover-bg);
+        background-color: var(--btn-bg-hover);
       }
     }
 
@@ -249,7 +253,7 @@
       background: none;
       border: none;
       cursor: pointer;
-      color: var(--color-text-light);
+      color: var(--text-secondary);
       font-size: 20px; /* Больший размер для иконки плюса */
       width: 32px;
       height: 32px;
@@ -260,7 +264,7 @@
       flex-shrink: 0;
 
       &:hover {
-        background-color: var(--color-button-hover-bg);
+        background-color: var(--btn-bg-hover);
       }
     }
   }
