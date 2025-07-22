@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import { sveltePreprocess } from 'svelte-preprocess'; // Используем svelte-preprocess
 import path from 'path';
 
 export default defineConfig({
@@ -8,7 +9,11 @@ export default defineConfig({
       hot: !process.env.VITEST,
       compilerOptions: {
         css: 'injected'
-      }
+      },
+      preprocess: sveltePreprocess({
+        typescript: true,
+        scss: true,
+      }),
     })
   ],
   test: {
@@ -16,6 +21,12 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/lib/test-setup.ts'],
     include: ['src/**/*.{test,spec}.{js,ts}'],
+    // Добавляем настройки для исправления Svelte preprocessing
+    alias: {
+      '$lib': path.resolve('./src/lib'),
+      '$app': path.resolve('./node_modules/@sveltejs/kit/src/runtime/app'),
+      '~': path.resolve('./src')
+    },
     coverage: {
       reporter: ['text', 'json', 'html'],
       exclude: [
@@ -30,7 +41,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '$lib': path.resolve('./src/lib'),
-      '$app': path.resolve('./node_modules/@sveltejs/kit/src/runtime/app')
+      '$app': path.resolve('./node_modules/@sveltejs/kit/src/runtime/app'),
+      '~': path.resolve('./src')
     }
   }
 });

@@ -144,7 +144,7 @@
   .address-bar {
     flex: 1;
     width: 100%;
-    margin: 0;
+    margin: var(--spacing-xs) 0; /* 4px отступы сверху и снизу согласно 4px сетке */
   }
 
   .address-input-container {
@@ -155,7 +155,7 @@
     border-radius: var(--btn-border-radius);
     padding: 0;
     height: 32px;
-    margin: var(--spacing-sm) 0; /* 8px отступы сверху и снизу */
+    margin: var(--spacing-xs) 0; /* 4px отступы сверху и снизу согласно 4px сетке */
   }
 
   .address-input-container:focus-within {
@@ -194,16 +194,16 @@
     background: transparent;
     border: none;
     color: var(--text-primary);
-    padding: 4px; /* 8px отступы */
+    padding: var(--spacing-sm); /* 8px отступы согласно переменной */
     cursor: default;
     border-radius: var(--btn-border-radius);
-    margin-right: 4px; /* 4px правый отступ */
+    margin-right: var(--spacing-xs); /* 4px правый отступ согласно 4px сетке */
     font-size: 14px;
   }
 
   .go-btn:hover {
     background: var(--btn-bg-hover);
     color: var(--text-primary);
-    padding: 4px; /* Уменьшенный размер ховера */
+    padding: var(--spacing-sm); /* Согласованный размер ховера */
   }
 </style>

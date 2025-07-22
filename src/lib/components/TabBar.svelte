@@ -4,6 +4,7 @@
     setActiveTab,
     closeTab,
     toggleTabAudio,
+    addTab // Добавлено для Сценария 4.2
   } from '../stores/browser.svelte.js';
 
   async function handleTabClick(tabId: string) {
@@ -27,6 +28,10 @@
       return title.substring(0, 16) + '...';
     }
     return title;
+  }
+
+  async function handleNewTabButtonClick() {
+    await addTab();
   }
 </script>
 
@@ -105,232 +110,163 @@
     <!-- Пустое пространство также draggable -->
     <div class="empty-space" data-tauri-drag-region></div>
   </div>
+
+  <!-- Кнопка добавления новой вкладки (Сценарий 4.2) -->
+  <button
+    class="new-tab-button"
+    onclick={handleNewTabButtonClick}
+    type="button"
+    aria-label="Новая вкладка"
+  >
+    <i class="ph ph-plus"></i>
+  </button>
 </div>
 
-<style>
+<style lang="scss">
   .tab-bar {
     display: flex;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
+    align-items: center;
+    height: 44px; /* Высота таббара */
+    background-color: var(--color-tab-bar-bg);
+    padding-right: 8px; /* Отступ справа для кнопки "+" */
+    gap: 2px;
     overflow: hidden;
-    min-height: var(--tabbar-height);
-    position: relative;
-    z-index: 1000;
-    padding: var(--container-padding) var(--container-padding) var(--container-padding)
-      var(--container-padding);
-  }
+    border-bottom: 1px solid var(--color-border);
 
-  .tabs-scrollable {
-    display: flex;
-    flex: 1;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    /* Контейнер вкладок draggable - пустые области между вкладками можно перетаскивать */
-    -webkit-app-region: drag;
-    /* Резервируем место под WindowControls справа */
-    margin-right: var(--window-controls-width);
-  }
+    .tabs-scrollable {
+      display: flex;
+      flex-grow: 1; /* Занимает все доступное пространство */
+      overflow-x: auto; /* Позволяет прокручивать табы */
+      -webkit-overflow-scrolling: touch; /* Улучшенная прокрутка на touch-устройствах */
+      scrollbar-width: none; /* Скрываем стандартный скроллбар Firefox */
+      margin-right: var(--window-controls-width); /* Резервируем место под WindowControls справа */
+      &::-webkit-scrollbar {
+        display: none; /* Скрываем скроллбар WebKit */
+      }
+    }
 
-  .empty-space {
-    flex: 1;
-    min-height: var(--btn-size-small);
-    -webkit-app-region: drag;
-  }
+    .tab-wrapper {
+      flex-shrink: 0; /* Табы не сжимаются */
+      display: flex;
+      align-items: center;
+      padding: 0 4px; /* Отступы вокруг кнопки закрытия и иконки звука */
+      height: 100%;
+      border-right: 1px solid var(--color-tab-bar-border);
 
-  .tabs-scrollable::-webkit-scrollbar {
-    display: none;
-  }
+      &.active {
+        background-color: var(--color-tab-active-bg);
+        border-bottom: 2px solid var(--color-primary); /* Акцент для активной вкладки */
+        margin-bottom: -1px; /* Компенсируем границу */
+      }
+    }
 
-  .tab-wrapper {
-    display: flex;
-    align-items: center;
-    min-width: 160px;
-    max-width: 240px;
-    height: var(--btn-size-small);
-    background: var(--bg-secondary);
-    border-right: 1px solid var(--border-color);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    border-radius: var(--btn-border-radius);
-    margin-right: var(--spacing-xs);
-    flex-shrink: 0;
-    -webkit-app-region: no-drag;
-  }
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 8px; /* Расстояние между иконкой/фавиконом и заголовком */
+      padding: 0 12px; /* Внутренние отступы таба */
+      height: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text);
+      font-size: 14px;
+      user-select: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px; /* Ограничение ширины таба */
 
-  .tab {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    height: 100%;
-    background: transparent;
-    border: none;
-    color: inherit;
-    cursor: pointer;
-    border-radius: var(--btn-border-radius);
-    -webkit-app-region: no-drag;
-  }
+      &:hover {
+        background-color: var(--color-tab-hover-bg);
+      }
 
-  .tab-wrapper:hover:not(.active) {
-    background: var(--btn-bg-hover);
-  }
+      .tab-content {
+        display: flex;
+        align-items: center;
+        min-width: 0; /* Для правильного обрезания текста */
+      }
 
-  .tab-wrapper.active {
-    background: #2f6bff;
-    color: white;
-    border-bottom: none;
-    box-shadow: 0 2px 8px rgba(47, 107, 255, 0.3);
-    z-index: 2;
-  }
+      .tab-icon-container {
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
 
-  .tab-wrapper.active .tab-title {
-    color: white;
-    font-weight: 500;
-  }
+        .tab-favicon {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
 
-  .tab-wrapper.active .tab-icon {
-    color: white;
-  }
+        .tab-icon {
+          font-size: 16px;
+          &.loading {
+            animation: spin 1s linear infinite;
+          }
+        }
+      }
 
-  .tab-wrapper.active .tab-close {
-    color: rgba(255, 255, 255, 0.8);
-    opacity: 1;
-  }
+      .tab-title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
 
-  .tab-wrapper.active .tab-close:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-  }
+    .audio-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text-light);
+      font-size: 14px;
+      padding: 4px;
+      border-radius: 4px;
+      margin-left: -4px; /* Смещаем ближе к тексту */
 
-  .tab-content {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: 0 var(--spacing-md);
-    width: 100%;
-    min-width: 0;
-    -webkit-app-region: no-drag;
-  }
+      &:hover {
+        background-color: var(--color-button-hover-bg);
+      }
+    }
 
-  .tab-icon-container {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    flex-shrink: 0;
-  }
+    .tab-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text-light);
+      font-size: 14px;
+      padding: 4px;
+      border-radius: 4px;
+      margin-left: 4px; /* Отступ от заголовка */
 
-  .tab-icon {
-    flex-shrink: 0;
-    font-size: var(--btn-font-size);
-    width: var(--btn-icon-size);
-    height: var(--btn-icon-size);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-secondary);
-  }
+      &:hover {
+        background-color: var(--color-button-hover-bg);
+      }
+    }
 
-  .tab-favicon {
-    flex-shrink: 0;
-    width: var(--btn-icon-size);
-    height: var(--btn-icon-size);
-    object-fit: contain;
-    margin-right: var(--spacing-sm); /* Отступ как у tab-icon */
-  }
+    .new-tab-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text-light);
+      font-size: 20px; /* Больший размер для иконки плюса */
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
 
-  .tab-icon.loading {
-    animation: spin 1s linear infinite;
-    color: var(--accent-color);
-  }
-
-  .tab-wrapper.active .tab-icon.loading {
-    color: white;
-  }
-
-  .tab-title {
-    flex: 1;
-    color: var(--text-primary);
-    font-size: 13px;
-    font-weight: 400;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    min-width: 0;
-    line-height: 1.4;
-  }
-
-  .tab-close {
-    flex-shrink: 0;
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: var(--btn-font-size);
-    cursor: default;
-    padding: 0;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-sm);
-    transition:
-      background-color 0.2s ease-in-out,
-      color 0.2s ease-in-out;
-    opacity: 0;
-    margin-right: var(--spacing-xxs);
-    -webkit-app-region: no-drag;
-  }
-
-  .tab-wrapper:hover .tab-close {
-    opacity: 1;
-  }
-
-  .tab-close:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-  }
-
-  .audio-toggle {
-    flex-shrink: 0;
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: var(--btn-font-size);
-    cursor: default;
-    padding: 0;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-sm);
-    transition:
-      background-color 0.2s ease-in-out,
-      color 0.2s ease-in-out;
-    margin-right: var(--spacing-xs);
-    -webkit-app-region: no-drag;
-  }
-
-  .audio-toggle:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-  }
-
-  .tab-wrapper.active .audio-toggle {
-    color: rgba(255, 255, 255, 0.8);
-  }
-
-  .tab-wrapper.active .audio-toggle:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
+      &:hover {
+        background-color: var(--color-button-hover-bg);
+      }
+    }
   }
 
   @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 </style>

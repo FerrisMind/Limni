@@ -38,5 +38,5 @@ playwright-report/
 .vscode/
 .vercel/
 test-results/
-lib.rs
-main.rs
+/lib.rs
+/main.rs

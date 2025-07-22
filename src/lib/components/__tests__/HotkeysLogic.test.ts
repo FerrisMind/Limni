@@ -1,19 +1,34 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { createHotkeyHandler, type HotkeyHandler } from '../../utils/hotkeys.js';
 
-// Мок для browser store
-const mockBrowserStore = {
+// Мок для browser store с использованием vi.hoisted()
+const mockBrowserStore = vi.hoisted(() => ({
   getActiveTab: vi.fn(),
-  reloadTab: vi.fn(),
-};
+  addTab: vi.fn(),
+}));
+
+// Мок для Tauri invoke
+const mockInvoke = vi.hoisted(() => vi.fn());
 
 // Мок функций
 vi.mock('../../stores/browser.svelte.js', () => ({
-  getActiveTab: () => mockBrowserStore.getActiveTab(),
-  reloadTab: (tabId: string) => mockBrowserStore.reloadTab(tabId),
+  getActiveTab: mockBrowserStore.getActiveTab,
+  addTab: mockBrowserStore.addTab,
+  closeTab: vi.fn(),
+  updateTabUrl: vi.fn(),
+  browserState: { tabs: [] },
+  setActiveTab: vi.fn(),
 }));
 
-describe('HotkeysLogic - Сценарии 13.1, 13.2, 13.3', () => {
+vi.mock('@tauri-apps/api/core', () => ({
+  invoke: mockInvoke,
+}));
+
+vi.mock('@tauri-apps/api/window', () => ({
+  getCurrentWindow: vi.fn(),
+}));
+
+describe('HotkeysLogic - Сценарии 13.1, 13.2, 13.3, 4.1', () => {
   let hotkeyHandler: HotkeyHandler;
   let originalDispatchEvent: typeof document.dispatchEvent;
 
@@ -62,8 +77,11 @@ describe('HotkeysLogic - Сценарии 13.1, 13.2, 13.3', () => {
       // Проверяем, что preventDefault был вызван
       expect(preventDefaultSpy).toHaveBeenCalled();
 
-      // Проверяем, что reloadTab был вызван с правильным ID
-      expect(mockBrowserStore.reloadTab).toHaveBeenCalledWith('test-tab-1');
+      // Проверяем, что invoke был вызван с правильными параметрами
+      expect(mockInvoke).toHaveBeenCalledWith('navigate_webview', {
+        tabId: 'test-tab-1',
+        url: 'https://example.com',
+      });
     });
 
     it('не должен обновлять если нет активной вкладки при Ctrl+R', async () => {
@@ -77,8 +95,8 @@ describe('HotkeysLogic - Сценарии 13.1, 13.2, 13.3', () => {
 
       await hotkeyHandler.handleKeydownEvent(keydownEvent);
 
-      // reloadTab не должен быть вызван
-      expect(mockBrowserStore.reloadTab).not.toHaveBeenCalled();
+      // invoke не должен быть вызван
+      expect(mockInvoke).not.toHaveBeenCalled();
     });
   });
 
@@ -97,7 +115,10 @@ describe('HotkeysLogic - Сценарии 13.1, 13.2, 13.3', () => {
       await hotkeyHandler.handleKeydownEvent(keydownEvent);
 
       expect(preventDefaultSpy).toHaveBeenCalled();
-      expect(mockBrowserStore.reloadTab).toHaveBeenCalledWith('test-tab-2');
+      expect(mockInvoke).toHaveBeenCalledWith('navigate_webview', {
+        tabId: 'test-tab-2',
+        url: 'https://github.com',
+      });
     });
 
     it('не должен обновлять если нет активной вкладки при F5', async () => {
@@ -110,7 +131,38 @@ describe('HotkeysLogic - Сценарии 13.1, 13.2, 13.3', () => {
 
       await hotkeyHandler.handleKeydownEvent(keydownEvent);
 
-      expect(mockBrowserStore.reloadTab).not.toHaveBeenCalled();
+      expect(mockInvoke).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Сценарий 4.1: Ctrl+T для создания новой вкладки', () => {
+    it('должен создавать новую вкладку при Ctrl+T', async () => {
+      const keydownEvent = new KeyboardEvent('keydown', {
+        key: 't',
+        ctrlKey: true,
+        bubbles: true,
+      });
+
+      const preventDefaultSpy = vi.spyOn(keydownEvent, 'preventDefault');
+
+      await hotkeyHandler.handleKeydownEvent(keydownEvent);
+
+      expect(preventDefaultSpy).toHaveBeenCalled();
+      expect(mockBrowserStore.addTab).toHaveBeenCalled();
+    });
+
+    it('не должен создавать новую вкладку в input полях при Ctrl+T', async () => {
+      const inputElement = document.createElement('input');
+      const keydownEvent = new KeyboardEvent('keydown', {
+        key: 't',
+        ctrlKey: true,
+        bubbles: true,
+      });
+      Object.defineProperty(keydownEvent, 'target', { value: inputElement });
+
+      await hotkeyHandler.handleKeydownEvent(keydownEvent);
+
+      expect(mockBrowserStore.addTab).not.toHaveBeenCalled();
     });
   });
 
@@ -178,8 +230,8 @@ describe('HotkeysLogic - Сценарии 13.1, 13.2, 13.3', () => {
 
       await hotkeyHandler.handleKeydownEvent(keydownEvent);
 
-      // reloadTab не должен быть вызван
-      expect(mockBrowserStore.reloadTab).not.toHaveBeenCalled();
+      // invoke не должен быть вызван
+      expect(mockInvoke).not.toHaveBeenCalled();
     });
 
     it('должен игнорировать F5 в textarea', async () => {
@@ -196,7 +248,7 @@ describe('HotkeysLogic - Сценарии 13.1, 13.2, 13.3', () => {
 
       await hotkeyHandler.handleKeydownEvent(keydownEvent);
 
-      expect(mockBrowserStore.reloadTab).not.toHaveBeenCalled();
+      expect(mockInvoke).not.toHaveBeenCalled();
     });
 
     it('должен игнорировать горячие клавиши в contenteditable элементах', async () => {
@@ -216,7 +268,7 @@ describe('HotkeysLogic - Сценарии 13.1, 13.2, 13.3', () => {
 
       await hotkeyHandler.handleKeydownEvent(keydownEvent);
 
-      expect(mockBrowserStore.reloadTab).not.toHaveBeenCalled();
+      expect(mockInvoke).not.toHaveBeenCalled();
     });
   });
 
@@ -271,7 +323,7 @@ describe('HotkeysLogic - Сценарии 13.1, 13.2, 13.3', () => {
 
       await hotkeyHandler.handleKeydownEvent(normalREvent);
 
-      expect(mockBrowserStore.reloadTab).not.toHaveBeenCalled();
+      expect(mockInvoke).not.toHaveBeenCalled();
     });
 
     it('должен различать Ctrl+L и обычную клавишу L', async () => {
@@ -294,7 +346,10 @@ describe('HotkeysLogic - Сценарии 13.1, 13.2, 13.3', () => {
 
       await hotkeyHandler.handleReload();
 
-      expect(mockBrowserStore.reloadTab).toHaveBeenCalledWith('direct-tab');
+      expect(mockInvoke).toHaveBeenCalledWith('navigate_webview', {
+        tabId: 'direct-tab',
+        url: 'https://test.com',
+      });
     });
 
     it('handleCtrlL должен отправлять custom event', () => {

@@ -14,7 +14,7 @@ describe('AddressBar Auto-resize', () => {
     // Проверяем, что адресная строка имеет flex: 1 и width: 100%
     expect(addressBarContent).toContain('flex: 1');
     expect(addressBarContent).toContain('width: 100%');
-    expect(addressBarContent).toContain('margin: 0');
+    expect(addressBarContent).toContain('margin: var(--spacing-xs) 0');
 
     // Проверяем, что убрали max-width ограничение
     expect(addressBarContent).not.toContain('max-width: 600px');

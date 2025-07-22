@@ -1,10 +1,11 @@
-import { getActiveTab, closeTab, updateTabUrl, browserState, setActiveTab } from '../stores/browser.svelte.js';
+import { getActiveTab, closeTab, updateTabUrl, browserState, setActiveTab, addTab } from '../stores/browser.svelte.js';
 import { invoke } from '@tauri-apps/api/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 
 export type HotkeyHandler = {
   handleReload: () => Promise<void>;
   handleCtrlL: () => void;
+  handleNewTab: () => Promise<void>; // Добавлено для Сценария 4.1
   isInputElement: (target: EventTarget | null) => boolean;
   shouldIgnoreEvent: (event: KeyboardEvent) => boolean;
   handleKeydownEvent: (event: KeyboardEvent) => Promise<void>;
@@ -12,7 +13,7 @@ export type HotkeyHandler = {
 
 /**
  * Создает обработчики для глобальных горячих клавиш
- * Сценарии 13.1, 13.2, 13.3 из MVP
+ * Сценарии 13.1, 13.2, 13.3, 4.1 из MVP
  */
 export function createHotkeyHandler(): HotkeyHandler {
   // Обработчик обновления страницы (сценарии 13.1 и 13.3)
@@ -31,6 +32,12 @@ export function createHotkeyHandler(): HotkeyHandler {
         activeTab.isLoading = false;
       }, 500);
     }
+  }
+
+  // Обработчик создания новой вкладки (сценарий 4.1)
+  async function handleNewTab(): Promise<void> {
+    console.log('➕ Горячие клавиши: создание новой вкладки');
+    await addTab(); // Вызываем функцию создания новой вкладки
   }
 
   // Обработчик фокуса на адресную строку (сценарий 13.2)
@@ -87,6 +94,13 @@ export function createHotkeyHandler(): HotkeyHandler {
       return;
     }
 
+    // Сценарий 4.1: Ctrl+T для создания новой вкладки
+    if (event.ctrlKey && event.key === 't') {
+      event.preventDefault();
+      await handleNewTab();
+      return;
+    }
+
     // Сценарий 13.2: Ctrl+L для фокуса на адресную строку
     if (event.ctrlKey && event.key === 'l') {
       event.preventDefault();
@@ -98,6 +112,7 @@ export function createHotkeyHandler(): HotkeyHandler {
   return {
     handleReload,
     handleCtrlL,
+    handleNewTab, // Добавлено
     isInputElement,
     shouldIgnoreEvent,
     handleKeydownEvent,
