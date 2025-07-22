@@ -162,4 +162,4 @@ Este projeto está licenciado sob a Limni Attribution License (LAL). Veja o arqu
 
 **Limni** - Demonstrando o poder das WebViews nativas em aplicações desktop modernas! 🚀
 
-**Criado por [FerrisMind](https://github.com/FerrisMind)**
+**Criado por [FerrisMind](https://github.com/FerrisMind)** **Tradução: Talita Maia Sousa**
