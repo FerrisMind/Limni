@@ -43,7 +43,6 @@
           onclick={() => handleTabClick(tab.id)}
           onmousedown={(e) => {
             if (e.button === 1) { // 1 for middle click
-              console.log('Средний клик по вкладке (onmousedown), предотвращаем дефолтное поведение.');
               e.preventDefault();
               e.stopPropagation();
               handleTabClose(e, tab.id);
