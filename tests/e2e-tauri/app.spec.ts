@@ -19,10 +19,16 @@ test.describe('Limni Tauri Application - Native Tests', () => {
       const pages = context.pages();
       for (const testPage of pages) {
         try {
-          // Проверяем наличие Tauri API с таймаутом
+          // Ждем загрузки страницы
+          await testPage.waitForLoadState('networkidle', { timeout: 10000 });
+          
+          // Проверяем наличие Tauri API с увеличенным таймаутом
           await testPage.waitForFunction(
-            () => typeof window.__TAURI__ !== 'undefined',
-            { timeout: 5000 }
+            () => {
+              return typeof window.__TAURI__ !== 'undefined' && 
+                     window.__TAURI__.core !== undefined;
+            },
+            { timeout: 15000 }
           );
           tauriPage = testPage;
           break;
@@ -42,6 +48,9 @@ test.describe('Limni Tauri Application - Native Tests', () => {
         throw new Error('Не найдено активных страниц в Tauri приложении');
       }
       tauriPage = pages[0];
+      
+      // Ждем загрузки страницы даже для fallback
+      await tauriPage.waitForLoadState('networkidle', { timeout: 10000 });
       console.log('⚠️ Tauri API не найдены, используем первую доступную страницу');
     } else {
       console.log('✅ Найдена страница с Tauri API');
@@ -76,21 +85,36 @@ test.describe('Limni Tauri Application - Native Tests', () => {
   });
 
   test('should have working Tauri APIs', async () => {
-    // Ждем инициализации Tauri API с таймаутом
+    // Ждем инициализации Tauri API с увеличенным таймаутом
     const tauriAvailable = await page.waitForFunction(
-      () => typeof window.__TAURI__ !== 'undefined',
-      { timeout: 10000 }
+      () => {
+        return typeof window.__TAURI__ !== 'undefined' && 
+               window.__TAURI__.core !== undefined &&
+               typeof window.__TAURI__.core.invoke === 'function';
+      },
+      { timeout: 20000 }
     ).then(() => true).catch(() => false);
     
     expect(tauriAvailable).toBe(true);
     
     // Дополнительная проверка основных API
     if (tauriAvailable) {
-      const hasCore = await page.evaluate(() => {
-        return typeof window.__TAURI__.core !== 'undefined';
+      const apiCheck = await page.evaluate(() => {
+        const tauri = window.__TAURI__;
+        return {
+          hasCore: typeof tauri.core !== 'undefined',
+          hasInvoke: typeof tauri.core.invoke === 'function',
+          hasEvent: typeof tauri.event !== 'undefined',
+          hasWindow: typeof tauri.webviewWindow !== 'undefined'
+        };
       });
-      expect(hasCore).toBe(true);
-      console.log('✅ Tauri API и core модуль доступны в нативном приложении');
+      
+      expect(apiCheck.hasCore).toBe(true);
+      expect(apiCheck.hasInvoke).toBe(true);
+      expect(apiCheck.hasEvent).toBe(true);
+      expect(apiCheck.hasWindow).toBe(true);
+      
+      console.log('✅ Tauri API и все основные модули доступны в нативном приложении');
     }
   });
 
@@ -110,13 +134,27 @@ test.describe('Limni Tauri Application - Native Tests', () => {
     const isVisible = await page.isVisible('body');
     expect(isVisible).toBe(true);
 
-    // Проверяем размеры окна
-    const viewport = page.viewportSize();
-    expect(viewport).toBeTruthy();
-    expect(viewport!.width).toBeGreaterThan(0);
-    expect(viewport!.height).toBeGreaterThan(0);
+    // Проверяем размеры окна через evaluate для Tauri
+    const windowInfo = await page.evaluate(() => {
+      return {
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight,
+        outerWidth: window.outerWidth,
+        outerHeight: window.outerHeight,
+        viewport: {
+          width: document.documentElement.clientWidth,
+          height: document.documentElement.clientHeight
+        }
+      };
+    });
+    
+    expect(windowInfo.innerWidth).toBeGreaterThan(0);
+    expect(windowInfo.innerHeight).toBeGreaterThan(0);
+    expect(windowInfo.viewport.width).toBeGreaterThan(0);
+    expect(windowInfo.viewport.height).toBeGreaterThan(0);
 
-    console.log(`📐 Размер окна: ${viewport!.width}x${viewport!.height}`);
+    console.log(`📐 Размер окна: ${windowInfo.innerWidth}x${windowInfo.innerHeight}`);
+    console.log(`📐 Viewport: ${windowInfo.viewport.width}x${windowInfo.viewport.height}`);
   });
 
   test('should handle keyboard and mouse events', async () => {

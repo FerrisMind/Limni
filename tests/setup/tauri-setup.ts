@@ -15,7 +15,6 @@ export default async function globalSetup() {
     '..',
     '..',
     'src-tauri',
-    'target',
     'x86_64-pc-windows-msvc',
     'release',
     'Limni.exe'
@@ -26,7 +25,27 @@ export default async function globalSetup() {
   if (!existsSync(tauriExePath)) {
     console.log('⚠️  Исполняемый файл Tauri не найден. Собираем приложение...');
 
-    // Собираем приложение
+    // Сначала собираем frontend
+    console.log('🔨 Сборка frontend...');
+    const frontendBuild = spawn('npm', ['run', 'build'], {
+      stdio: 'inherit',
+      shell: true,
+      cwd: path.join(__dirname, '..', '..'),
+    });
+
+    await new Promise((resolve, reject) => {
+      frontendBuild.on('close', (code) => {
+        if (code === 0) {
+          console.log('✅ Frontend успешно собран');
+          resolve(void 0);
+        } else {
+          reject(new Error(`Сборка frontend завершилась с кодом ${code}`));
+        }
+      });
+    });
+
+    // Затем собираем Tauri приложение
+    console.log('🔨 Сборка Tauri приложения...');
     const buildProcess = spawn('npm', ['run', 'tauri', 'build'], {
       stdio: 'inherit',
       shell: true,
@@ -39,7 +58,7 @@ export default async function globalSetup() {
           console.log('✅ Tauri приложение успешно собрано');
           resolve(void 0);
         } else {
-          reject(new Error(`Сборка завершилась с кодом ${code}`));
+          reject(new Error(`Сборка Tauri завершилась с кодом ${code}`));
         }
       });
     });

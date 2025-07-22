@@ -97,6 +97,58 @@ cargo tauri dev
 cargo tauri build
 ```
 
+## 🧪 Testing
+
+### Unit Tests
+```bash
+npm run test          # Run unit tests
+npm run test:run      # Run tests once
+npm run test:coverage # Run with coverage
+npm run test:ui       # Run with UI
+```
+
+### E2E Tests
+
+#### 🎯 Tauri Application Tests (Рекомендуется)
+**Для тестирования вашего нативного Tauri приложения:**
+```bash
+npm run test:e2e:tauri         # Тестирует нативное Tauri приложение
+npm run test:e2e:tauri:ui      # С UI интерфейсом
+npm run test:e2e:tauri:headed  # В видимом режиме
+```
+
+#### 🌐 Browser Tests (Веб-версия)
+**Для тестирования веб-версии в браузерах:**
+```bash
+npm run test:e2e         # Тестирует в браузерах (chromium, firefox, webkit)
+npm run test:e2e:ui      # С UI интерфейсом
+npm run test:e2e:headed  # В видимом режиме
+```
+
+#### 🚗 WebDriver Tests
+```bash
+npm run test:e2e:webdriver     # Альтернативный способ через WebDriver
+npm run test:e2e:webdriver:ui  # С UI интерфейсом
+```
+
+### Rust Tests
+```bash
+npm run test:rust     # Run Rust tests
+```
+
+### All Tests
+```bash
+npm run test:all:tauri    # Все тесты + Tauri E2E (рекомендуется)
+npm run test:all          # Все тесты + Browser E2E
+npm run test:all:webdriver # Все тесты + WebDriver E2E
+```
+
+### ⚠️ Важно для Tauri тестов
+- Tauri тесты запускают ваше нативное приложение автоматически
+- Приложение собирается в release режиме при первом запуске
+- Используется remote debugging через WebView2 на порту 9222
+- Тесты выполняются последовательно для стабильности
+
 ## 📁 Project Structure
 
 ```
