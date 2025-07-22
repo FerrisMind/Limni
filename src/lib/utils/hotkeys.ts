@@ -1,4 +1,6 @@
-import { getActiveTab, reloadTab } from '../stores/browser.svelte.js';
+import { getActiveTab, closeTab, updateTabUrl, browserState, setActiveTab } from '../stores/browser.svelte.js';
+import { invoke } from '@tauri-apps/api/core';
+import { getCurrentWindow } from '@tauri-apps/api/window';
 
 export type HotkeyHandler = {
   handleReload: () => Promise<void>;
@@ -18,7 +20,16 @@ export function createHotkeyHandler(): HotkeyHandler {
     const activeTab = getActiveTab();
     if (activeTab) {
       console.log('🔄 Горячие клавиши: обновление вкладки', activeTab.id);
-      await reloadTab(activeTab.id);
+      await invoke('navigate_webview', {
+        tabId: activeTab.id,
+        url: activeTab.url,
+      });
+      // Симулируем isLoading для UI
+      activeTab.isLoading = true;
+      // Добавляем небольшой таймаут, чтобы UI показал загрузку
+      setTimeout(() => {
+        activeTab.isLoading = false;
+      }, 500);
     }
   }
 
@@ -105,7 +116,93 @@ export function initializeGlobalHotkeys(): () => void {
     hotkeyHandler.handleKeydownEvent(event).catch(console.error);
   };
 
-  document.addEventListener('keydown', keydownListener);
+  document.addEventListener('keydown', async (event) => {
+    // Игнорируем события, если фокус находится в полях ввода
+    const target = event.target as HTMLElement;
+    if (
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.isContentEditable
+    ) {
+      return;
+    }
+
+    // Ctrl + L (или Cmd + L на Mac) - фокус на адресную строку
+    if ((event.ctrlKey || event.metaKey) && event.key === 'l') {
+      event.preventDefault();
+      const addressBar = document.querySelector('.address-bar input') as HTMLInputElement;
+      if (addressBar) {
+        addressBar.focus();
+        addressBar.select(); // Выделяем весь текст
+      }
+    }
+
+    // F5 или Ctrl + R (или Cmd + R на Mac) - перезагрузка страницы
+    if (event.key === 'F5' || ((event.ctrlKey || event.metaKey) && event.key === 'r')) {
+      event.preventDefault();
+      const activeTab = getActiveTab();
+      if (activeTab && activeTab.webviewLabel) {
+        await invoke('navigate_webview', {
+          tabId: activeTab.id,
+          url: activeTab.url,
+        });
+        // Симулируем isLoading для UI
+        activeTab.isLoading = true;
+        // Добавляем небольшой таймаут, чтобы UI показал загрузку
+        setTimeout(() => {
+          activeTab.isLoading = false;
+        }, 500);
+      }
+    }
+
+    // Ctrl + T (или Cmd + T на Mac) - новая вкладка
+    if ((event.ctrlKey || event.metaKey) && event.key === 't') {
+      event.preventDefault();
+      await invoke('open_url_in_new_tab', { url: 'about:blank' });
+    }
+
+    // Ctrl + W (или Cmd + W на Mac) - закрыть вкладку
+    if ((event.ctrlKey || event.metaKey) && event.key === 'w') {
+      event.preventDefault();
+      const activeTab = getActiveTab();
+      if (activeTab) {
+        await closeTab(activeTab.id);
+      }
+    }
+
+    // Ctrl + Tab - переключение вкладок (вперед)
+    if ((event.ctrlKey || event.metaKey) && event.key === 'Tab' && !event.shiftKey) {
+      event.preventDefault();
+      // Логика переключения вперед
+      const tabs = browserState.tabs;
+      if (tabs.length <= 1) return;
+
+      const activeIndex = tabs.findIndex(tab => tab.isActive);
+      let nextIndex = (activeIndex + 1) % tabs.length;
+      // Пропускаем 'about:blank' вкладки при переключении, если они не активны и есть другие вкладки
+      if (tabs[nextIndex].url === 'about:blank' && tabs.length > 1 && !tabs[nextIndex].isActive) {
+        nextIndex = (nextIndex + 1) % tabs.length;
+      }
+
+      await setActiveTab(tabs[nextIndex].id);
+    }
+
+    // Ctrl + Shift + Tab - переключение вкладок (назад)
+    if ((event.ctrlKey || event.metaKey) && event.key === 'Tab' && event.shiftKey) {
+      event.preventDefault();
+      // Логика переключения назад
+      const tabs = browserState.tabs;
+      if (tabs.length <= 1) return;
+
+      const activeIndex = tabs.findIndex(tab => tab.isActive);
+      let prevIndex = (activeIndex - 1 + tabs.length) % tabs.length;
+      // Пропускаем 'about:blank' вкладки при переключении, если они не активны и есть другие вкладки
+      if (tabs[prevIndex].url === 'about:blank' && tabs.length > 1 && !tabs[prevIndex].isActive) {
+        prevIndex = (prevIndex - 1 + tabs.length) % tabs.length;
+      }
+      await setActiveTab(tabs[prevIndex].id);
+    }
+  });
 
   // Возвращаем функцию очистки
   return () => {

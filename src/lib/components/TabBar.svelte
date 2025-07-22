@@ -32,12 +32,23 @@
 
 <div class="tab-bar" data-tauri-drag-region>
   <!-- Прокручиваемый контейнер только для табов -->
-  <div class="tabs-scrollable" data-tauri-drag-region>
+  <div
+    class="tabs-scrollable"
+    data-tauri-drag-region
+  >
     {#each browserState.tabs as tab (tab.id)}
       <div class="tab-wrapper" class:active={tab.isActive}>
         <button
           class="tab"
           onclick={() => handleTabClick(tab.id)}
+          onmousedown={(e) => {
+            if (e.button === 1) { // 1 for middle click
+              console.log('Средний клик по вкладке (onmousedown), предотвращаем дефолтное поведение.');
+              e.preventDefault();
+              e.stopPropagation();
+              handleTabClose(e, tab.id);
+            }
+          }}
           type="button"
           aria-label="Переключиться на вкладку: {tab.title}"
         >
