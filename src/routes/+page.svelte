@@ -109,6 +109,7 @@
     --spacing-xl: 24px; /* Очень большой отступ */
 
     /* Высоты контейнеров */
+    --window-controls-height: 40px;
     --toolbar-height: 44px;
     --tabbar-height: 44px;
     --container-padding: 4px; /* (44px - 36px content) / 2 для центрирования */
@@ -260,7 +261,7 @@
     border: none;
     border-radius: 6px;
     font-size: 14px;
-    cursor: pointer;
+    cursor: default;
     transition: background-color 0.2s ease;
   }
 

@@ -189,9 +189,9 @@
   .window-controls {
     display: flex !important;
     align-items: center;
-    height: var(--toolbar-height); /* Устанавливаем высоту тулбара в соответствии с переменной */
+    height: var(--window-controls-height); /* Устанавливаем высоту тулбара в соответствии с переменной */
     position: fixed;
-    top: 0px;
+    top: 2px;
     right: 0px;
     z-index: 1001;
     gap: var(--spacing-xs);

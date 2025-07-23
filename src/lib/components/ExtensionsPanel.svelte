@@ -92,7 +92,7 @@
     background: transparent;
     color: var(--text-secondary);
     border-radius: var(--btn-border-radius);
-    cursor: pointer;
+    cursor: default;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -143,7 +143,7 @@
     background: var(--bg-secondary);
     color: var(--text-secondary);
     border-radius: 6px;
-    cursor: pointer;
+    cursor: default;
     font-size: 12px;
     font-weight: 500;
     transition: all 0.2s ease;
@@ -171,7 +171,7 @@
     background: transparent;
     color: var(--text-secondary);
     border-radius: 8px;
-    cursor: pointer;
+    cursor: default;
     display: flex;
     align-items: center;
     justify-content: center;

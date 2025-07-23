@@ -174,7 +174,7 @@
   }
 
   .error-details summary {
-    cursor: pointer;
+    cursor: default;
     font-size: 0.875rem;
     color: #64748b;
     margin-bottom: 0.5rem;
@@ -215,7 +215,7 @@
     border-radius: 8px;
     font-size: 0.875rem;
     font-weight: 500;
-    cursor: pointer;
+    cursor: default;
     transition: all 0.2s ease;
   }
 

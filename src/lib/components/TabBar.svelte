@@ -170,7 +170,7 @@
       height: 100%;
       background: none;
       border: none;
-      cursor: pointer;
+      cursor: default;
       color: var(--text-primary);
       font-size: 14px;
       user-select: none;
@@ -220,7 +220,7 @@
     .audio-toggle {
       background: none;
       border: none;
-      cursor: pointer;
+      cursor: default;
       color: var(--text-secondary);
       font-size: 14px;
       padding: 4px;
@@ -235,7 +235,7 @@
     .tab-close {
       background: none;
       border: none;
-      cursor: pointer;
+      cursor: default;
       color: var(--text-secondary);
       font-size: 14px;
       padding: 4px;
@@ -250,7 +250,7 @@
     .new-tab-button {
       background: none;
       border: none;
-      cursor: pointer;
+      cursor: default;
       color: var(--text-secondary);
       font-size: 20px; /* Больший размер для иконки плюса */
       width: 32px;
