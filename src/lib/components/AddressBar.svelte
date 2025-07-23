@@ -41,24 +41,53 @@
 
   // Проверка является ли строка URL
   function isURL(str: string): boolean {
-    if (str.includes('://')) return true;
-    if (isIPAddress(str)) return true;
-    if (str.includes('.') && !str.includes(' ')) return true;
-    if (str.includes(':') && str.split(':').length === 2) return true;
-    return false;
+    try {
+      // Использование встроенного URL API для более надежной валидации
+      const url = new URL(str.includes('://') ? str : `https://${str}`); // Пробуем добавить https:// для парсинга
+      return ['http:', 'https:', 'file:'].includes(url.protocol);
+    } catch {
+      // Если URL API не может распарсить, это не валидный URL
+      return false;
+    }
   }
 
   // Нормализация URL
   function normalizeURL(input: string): string {
-    if (input.includes('://')) return input;
-    if (isIPAddress(input)) return `http://${input}`;
-    if (input.includes(':') && input.split(':').length === 2) {
-      return `http://${input}`;
+    // Декодируем, если строка уже содержит escape-последовательности, чтобы избежать двойного кодирования
+    let processedInput = decodeURIComponent(input);
+
+    try {
+      // Проверяем, если строка уже является валидным URL с протоколом
+      if (processedInput.includes('://')) {
+        const url = new URL(processedInput);
+        if (url.protocol === 'file:' || url.protocol === 'http:' || url.protocol === 'https:') {
+          // Для file://, http://, https:// URL используем toASCIIString для Punycode, если необходимо
+          return url.protocol === 'file:' ? url.toString() : url.hostname.includes('xn--') ? url.toString() : new URL(url.toString()).href;
+        }
+      }
+
+      // Если это IP-адрес, добавляем http://
+      if (isIPAddress(processedInput)) {
+        return `http://${processedInput}`;
+      }
+
+      // Если это localhost с портом или домен с портом, добавляем http://
+      if (processedInput.includes(':') && processedInput.split(':').length === 2 && !processedInput.includes('/')) {
+        const [host, port] = processedInput.split(':');
+        // Проверяем, является ли хост валидным доменом или IP перед добавлением протокола
+        // Избегаем Punycode для host, если это не доменное имя (например, just-a-name:8080)
+        return `http://${new URL(`http://${host}`).hostname}:${port}`;
+      }
+
+      // Для остальных случаев предполагаем HTTPS и применяем Punycode
+      // Сначала пытаемся создать URL, чтобы корректно обработать доменное имя
+      const tempUrl = new URL(`https://${processedInput}`);
+      return tempUrl.href;
+    } catch (error) {
+      console.error('Ошибка нормализации URL:', error);
+      // В случае ошибки возвращаем исходный ввод, чтобы не ломать поиск
+      return input;
     }
-    if (input.includes('.') && !input.includes(' ')) {
-      return `https://${input}`;
-    }
-    return input;
   }
 
   // Обработка навигации

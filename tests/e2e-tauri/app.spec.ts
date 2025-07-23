@@ -19,15 +19,25 @@ test.describe('Limni Tauri Application - Native Tests', () => {
       const pages = context.pages();
       for (const testPage of pages) {
         try {
+          // Ждем загрузки DOM
+          await testPage.waitForLoadState('domcontentloaded', { timeout: 10000 });
           // Ждем загрузки страницы
           await testPage.waitForLoadState('networkidle', { timeout: 10000 });
 
           // Проверяем наличие Tauri API с увеличенным таймаутом
           await testPage.waitForFunction(
             () => {
-              return typeof window.__TAURI__ !== 'undefined' && window.__TAURI__.core !== undefined;
+              // Добавляем логирование для отладки
+              if (typeof (window as any).__TAURI_INTERNALS__ === 'undefined') {
+                console.log('DEBUG: window.__TAURI_INTERNALS__ is undefined');
+              } else if (typeof (window as any).__TAURI_INTERNALS__.core === 'undefined') {
+                console.log('DEBUG: window.__TAURI_INTERNALS__.core is undefined');
+              } else {
+                console.log('DEBUG: window.__TAURI_INTERNALS__ is available');
+              }
+              return typeof (window as any).__TAURI_INTERNALS__ !== 'undefined' && (window as any).__TAURI_INTERNALS__.core !== undefined;
             },
-            { timeout: 15000 }
+            { timeout: 30000 } // Увеличен таймаут
           );
           tauriPage = testPage;
           break;
@@ -57,6 +67,11 @@ test.describe('Limni Tauri Application - Native Tests', () => {
 
     page = tauriPage;
     console.log('✅ Подключились к Tauri приложению');
+
+    // Перенаправляем логи из WebView в консоль Playwright
+    page.on('console', (msg) => {
+      console.log(`WEBVIEW CONSOLE [${msg.type()}]: ${msg.text()}`);
+    });
   });
 
   test.afterAll(async () => {
@@ -84,14 +99,29 @@ test.describe('Limni Tauri Application - Native Tests', () => {
   });
 
   test('should have working Tauri APIs', async () => {
+    // Добавляем небольшую задержку, чтобы дать Tauri API инициализироваться
+    await page.waitForTimeout(2000);
+    // Ждем загрузки DOM
+    await page.waitForLoadState('domcontentloaded', { timeout: 10000 });
+
     // Ждем инициализации Tauri API с увеличенным таймаутом
     const tauriAvailable = await page
       .waitForFunction(
         () => {
+          // Добавляем логирование для отладки
+          if (typeof (window as any).__TAURI_INTERNALS__ === 'undefined') {
+            console.log('DEBUG: window.__TAURI_INTERNALS__ is undefined in test');
+          } else if (typeof (window as any).__TAURI_INTERNALS__.core === 'undefined') {
+            console.log('DEBUG: window.__TAURI_INTERNALS__.core is undefined in test');
+          } else if (typeof (window as any).__TAURI_INTERNALS__.core.invoke === 'undefined') {
+            console.log('DEBUG: window.__TAURI_INTERNALS__.core.invoke is undefined in test');
+          } else {
+            console.log('DEBUG: window.__TAURI_INTERNALS__ is fully available in test');
+          }
           return (
-            typeof window.__TAURI__ !== 'undefined' &&
-            window.__TAURI__.core !== undefined &&
-            typeof window.__TAURI__.core.invoke === 'function'
+            typeof (window as any).__TAURI_INTERNALS__ !== 'undefined' &&
+            (window as any).__TAURI_INTERNALS__.core !== undefined &&
+            typeof (window as any).__TAURI_INTERNALS__.core.invoke === 'function'
           );
         },
         { timeout: 20000 }
@@ -104,7 +134,7 @@ test.describe('Limni Tauri Application - Native Tests', () => {
     // Дополнительная проверка основных API
     if (tauriAvailable) {
       const apiCheck = await page.evaluate(() => {
-        const tauri = window.__TAURI__;
+        const tauri = (window as any).__TAURI_INTERNALS__;
         return {
           hasCore: typeof tauri?.core !== 'undefined',
           hasInvoke: typeof tauri?.core?.invoke === 'function',

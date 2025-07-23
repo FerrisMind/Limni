@@ -286,8 +286,6 @@ export async function updateTabUrl(tabId: string, url: string, _title?: string):
     } else {
       tab.favicon = undefined; // Очищаем favicon для специальных URL
     }
-
-    tab.isLoading = false;
   } catch (error) {
     console.error('Ошибка навигации:', error);
     tab.isLoading = false;
@@ -440,10 +438,6 @@ export async function reloadTab(tabId: string): Promise<void> {
         url: tab.url,
       });
     }
-    // Симулируем время загрузки
-    setTimeout(() => {
-      tab.isLoading = false;
-    }, 1000);
   } catch (error) {
     console.error('Ошибка перезагрузки:', error);
     tab.isLoading = false;

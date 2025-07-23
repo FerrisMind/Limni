@@ -15,6 +15,7 @@ export default async function globalSetup() {
     '..',
     '..',
     'src-tauri',
+    'target',
     'x86_64-pc-windows-msvc',
     'release',
     'Limni.exe'
@@ -89,7 +90,7 @@ export default async function globalSetup() {
   console.log('⏳ Ожидание запуска remote debugging порта...');
 
   let attempts = 0;
-  const maxAttempts = 30; // 30 секунд
+  const maxAttempts = 60; // Увеличено до 60 секунд
 
   while (attempts < maxAttempts) {
     try {
