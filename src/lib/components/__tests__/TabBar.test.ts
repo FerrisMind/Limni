@@ -1,13 +1,17 @@
 import { render, fireEvent, screen } from '@testing-library/svelte/svelte5';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import TabBar from '../TabBar.svelte';
-import { browserState, addTab, setActiveTab, closeTab, toggleTabAudio } from '../../stores/browser.svelte.js';
+import {
+  browserState,
+  addTab,
+  setActiveTab,
+  closeTab,
+  toggleTabAudio,
+} from '../../stores/browser.svelte.js';
 
 // Мокаем store для изоляции тестов компонента
-vi.mock('../../stores/browser.svelte.js', async (importOriginal) => {
-  const original = await importOriginal();
+vi.mock('../../stores/browser.svelte.js', async () => {
   return {
-    ...original,
     browserState: {
       tabs: [],
       activeTabId: undefined,
@@ -152,4 +156,4 @@ describe('TabBar - Общие сценарии', () => {
 
     expect(closeTab).toHaveBeenCalledWith('tab-1');
   });
-}); 
+});

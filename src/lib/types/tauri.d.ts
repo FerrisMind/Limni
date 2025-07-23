@@ -3,21 +3,25 @@
 
 declare global {
   interface Window {
-    __TAURI__: {
-      event: any;
-      window: any;
-      path: any;
-      fs: any;
-      shell: any;
-      dialog: any;
-      notification: any;
-      http: any;
-      clipboard: any;
-      globalShortcut: any;
-      process: any;
-      os: any;
-      updater: any;
-      app: any;
+    __TAURI__?: {
+      core?: {
+        invoke: (...args: any[]) => Promise<any>;
+      };
+      event?: any;
+      window?: any;
+      path?: any;
+      fs?: any;
+      shell?: any;
+      dialog?: any;
+      notification?: any;
+      http?: any;
+      clipboard?: any;
+      globalShortcut?: any;
+      process?: any;
+      os?: any;
+      updater?: any;
+      app?: any;
+      webviewWindow?: any;
     };
   }
 }

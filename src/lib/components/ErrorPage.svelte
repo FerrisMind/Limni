@@ -6,7 +6,7 @@
     tab: Tab;
   }
 
-  const { tab } = $props<Props>();
+  let { tab }: Props = $props();
 
   async function handleReload() {
     await reloadTab(tab.id);

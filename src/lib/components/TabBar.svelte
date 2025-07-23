@@ -8,7 +8,7 @@
     setActiveTab,
     closeTab,
     toggleTabAudio,
-    addTab // Добавлено для Сценария 4.2
+    addTab, // Добавлено для Сценария 4.2
   } from '../stores/browser.svelte.js';
 
   async function handleTabClick(tabId: string) {
@@ -41,17 +41,15 @@
 
 <div class="tab-bar" data-tauri-drag-region>
   <!-- Прокручиваемый контейнер только для табов -->
-  <div
-    class="tabs-scrollable"
-    data-tauri-drag-region
-  >
+  <div class="tabs-scrollable" data-tauri-drag-region>
     {#each browserState.tabs as tab (tab.id)}
       <div class="tab-wrapper" class:active={tab.isActive}>
         <button
           class="tab"
           onclick={() => handleTabClick(tab.id)}
           onmousedown={(e: MouseEvent) => {
-            if (e.button === 1) { // 1 for middle click
+            if (e.button === 1) {
+              // 1 for middle click
               e.preventDefault();
               e.stopPropagation();
               handleTabClose(e, tab.id);
@@ -270,7 +268,11 @@
   }
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 </style>

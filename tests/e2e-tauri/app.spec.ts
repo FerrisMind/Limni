@@ -1,18 +1,18 @@
-import { test, expect, chromium } from '@playwright/test';
+import { test, expect, type Page, type Browser, chromium } from '@playwright/test';
 
 test.describe('Limni Tauri Application - Native Tests', () => {
-  let browser: any;
-  let page: any;
+  let browser: Browser;
+  let page: Page;
 
   test.beforeAll(async () => {
     // Подключаемся к Tauri приложению через CDP
     browser = await chromium.connectOverCDP('http://localhost:9222');
     const contexts = browser.contexts();
-    
+
     if (contexts.length === 0) {
       throw new Error('Не найдено активных контекстов в Tauri приложении');
     }
-    
+
     // Найти контекст с Tauri API
     let tauriPage = null;
     for (const context of contexts) {
@@ -21,12 +21,11 @@ test.describe('Limni Tauri Application - Native Tests', () => {
         try {
           // Ждем загрузки страницы
           await testPage.waitForLoadState('networkidle', { timeout: 10000 });
-          
+
           // Проверяем наличие Tauri API с увеличенным таймаутом
           await testPage.waitForFunction(
             () => {
-              return typeof window.__TAURI__ !== 'undefined' && 
-                     window.__TAURI__.core !== undefined;
+              return typeof window.__TAURI__ !== 'undefined' && window.__TAURI__.core !== undefined;
             },
             { timeout: 15000 }
           );
@@ -39,7 +38,7 @@ test.describe('Limni Tauri Application - Native Tests', () => {
       }
       if (tauriPage) break;
     }
-    
+
     if (!tauriPage) {
       // Fallback к первой доступной странице
       const context = contexts[0];
@@ -48,14 +47,14 @@ test.describe('Limni Tauri Application - Native Tests', () => {
         throw new Error('Не найдено активных страниц в Tauri приложении');
       }
       tauriPage = pages[0];
-      
+
       // Ждем загрузки страницы даже для fallback
       await tauriPage.waitForLoadState('networkidle', { timeout: 10000 });
       console.log('⚠️ Tauri API не найдены, используем первую доступную страницу');
     } else {
       console.log('✅ Найдена страница с Tauri API');
     }
-    
+
     page = tauriPage;
     console.log('✅ Подключились к Tauri приложению');
   });
@@ -86,34 +85,39 @@ test.describe('Limni Tauri Application - Native Tests', () => {
 
   test('should have working Tauri APIs', async () => {
     // Ждем инициализации Tauri API с увеличенным таймаутом
-    const tauriAvailable = await page.waitForFunction(
-      () => {
-        return typeof window.__TAURI__ !== 'undefined' && 
-               window.__TAURI__.core !== undefined &&
-               typeof window.__TAURI__.core.invoke === 'function';
-      },
-      { timeout: 20000 }
-    ).then(() => true).catch(() => false);
-    
+    const tauriAvailable = await page
+      .waitForFunction(
+        () => {
+          return (
+            typeof window.__TAURI__ !== 'undefined' &&
+            window.__TAURI__.core !== undefined &&
+            typeof window.__TAURI__.core.invoke === 'function'
+          );
+        },
+        { timeout: 20000 }
+      )
+      .then(() => true)
+      .catch(() => false);
+
     expect(tauriAvailable).toBe(true);
-    
+
     // Дополнительная проверка основных API
     if (tauriAvailable) {
       const apiCheck = await page.evaluate(() => {
         const tauri = window.__TAURI__;
         return {
-          hasCore: typeof tauri.core !== 'undefined',
-          hasInvoke: typeof tauri.core.invoke === 'function',
-          hasEvent: typeof tauri.event !== 'undefined',
-          hasWindow: typeof tauri.webviewWindow !== 'undefined'
+          hasCore: typeof tauri?.core !== 'undefined',
+          hasInvoke: typeof tauri?.core?.invoke === 'function',
+          hasEvent: typeof tauri?.event !== 'undefined',
+          hasWindow: typeof tauri?.webviewWindow !== 'undefined',
         };
       });
-      
+
       expect(apiCheck.hasCore).toBe(true);
       expect(apiCheck.hasInvoke).toBe(true);
       expect(apiCheck.hasEvent).toBe(true);
       expect(apiCheck.hasWindow).toBe(true);
-      
+
       console.log('✅ Tauri API и все основные модули доступны в нативном приложении');
     }
   });
@@ -143,11 +147,11 @@ test.describe('Limni Tauri Application - Native Tests', () => {
         outerHeight: window.outerHeight,
         viewport: {
           width: document.documentElement.clientWidth,
-          height: document.documentElement.clientHeight
-        }
+          height: document.documentElement.clientHeight,
+        },
       };
     });
-    
+
     expect(windowInfo.innerWidth).toBeGreaterThan(0);
     expect(windowInfo.innerHeight).toBeGreaterThan(0);
     expect(windowInfo.viewport.width).toBeGreaterThan(0);
