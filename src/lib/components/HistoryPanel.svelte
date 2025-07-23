@@ -227,7 +227,9 @@
     height: var(--input-height-32px); /* Было 36px, изменено на 32px для 8px сетки */
     padding: 0 var(--input-padding-12px);
     border: var(--input-border-width-1px) solid var(--border-color);
-    border-radius: var(--card-border-radius-8px); /* Использование 8px радиуса для соответствия сетке */
+    border-radius: var(
+      --card-border-radius-8px
+    ); /* Использование 8px радиуса для соответствия сетке */
     background: var(--bg-secondary);
     color: var(--text-primary);
     font-size: var(--font-size-14px);

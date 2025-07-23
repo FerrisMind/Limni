@@ -87,10 +87,7 @@ export function createHotkeyHandler(): HotkeyHandler {
     // Для Ctrl+L, Ctrl+T, Ctrl+W, Ctrl+N, Ctrl+Shift+N, Ctrl+Tab, Ctrl+Shift+Tab разрешаем работать даже в input полях
     if (
       (event.ctrlKey || event.metaKey) &&
-      (event.key === 'l' ||
-        event.key === 'w' ||
-        event.key === 'n' ||
-        event.key === 'Tab')
+      (event.key === 'l' || event.key === 'w' || event.key === 'n' || event.key === 'Tab')
     ) {
       return false;
     }

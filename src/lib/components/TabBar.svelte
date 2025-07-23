@@ -306,14 +306,18 @@
       padding: 0 var(--spacing-8px); /* Отступы вокруг кнопки закрытия и иконки звука, теперь соответствует 8px сетке */
       height: 100%;
       border-right: var(--card-border-width-1px) solid var(--border-color);
-      border-radius: var(--card-border-radius-8px); /* Скругляем углы обертки таба, теперь соответствует 8px сетке */
+      border-radius: var(
+        --card-border-radius-8px
+      ); /* Скругляем углы обертки таба, теперь соответствует 8px сетке */
       transition: background-color 0.2s ease; /* Добавим плавный переход */
 
       &.active {
         background-color: var(--bg-secondary);
         /* border-bottom: 4px solid var(--accent-color); */ /* Убираем синюю полосу */
         margin-bottom: 0; /* Компенсируем границу */
-        border-radius: var(--card-border-radius-8px); /* Верхние углы скруглены, нижние прямые, теперь соответствует 8px сетке */
+        border-radius: var(
+          --card-border-radius-8px
+        ); /* Верхние углы скруглены, нижние прямые, теперь соответствует 8px сетке */
 
         .tab-close {
           opacity: 1; /* Кнопка закрытия всегда видима на активной вкладке */
@@ -329,7 +333,9 @@
         }
 
         &:hover {
-          background-color: var(--bg-secondary); /* Цвет фона ховера неактивного таба как у активного */
+          background-color: var(
+            --bg-secondary
+          ); /* Цвет фона ховера неактивного таба как у активного */
           .tab-close {
             opacity: 1; /* Показываем крестик при наведении на неактивный таб */
             pointer-events: auto;
@@ -354,8 +360,9 @@
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 304px; /* Ограничение ширины таба */
-      border-radius: var(--card-border-radius-8px); /* Скругляем углы самого таба, теперь соответствует 8px сетке */
-      
+      border-radius: var(
+        --card-border-radius-8px
+      ); /* Скругляем углы самого таба, теперь соответствует 8px сетке */
 
       /* Удаляем общий hover, теперь он управляется .tab-wrapper */
       /*
@@ -406,8 +413,12 @@
       color: var(--text-secondary);
       font-size: var(--font-size-14px);
       padding: var(--spacing-8px); /* Теперь соответствует 8px сетке */
-      border-radius: var(--card-border-radius-8px); /* Скругляем углы кнопки звука, теперь соответствует 8px сетке */
-      margin-left: calc(-1 * var(--spacing-8px)); /* Смещаем ближе к тексту, теперь соответствует 8px сетке */
+      border-radius: var(
+        --card-border-radius-8px
+      ); /* Скругляем углы кнопки звука, теперь соответствует 8px сетке */
+      margin-left: calc(
+        -1 * var(--spacing-8px)
+      ); /* Смещаем ближе к тексту, теперь соответствует 8px сетке */
 
       &:hover {
         background-color: var(--btn-bg-hover);
@@ -421,7 +432,9 @@
       color: var(--text-secondary);
       font-size: var(--font-size-14px);
       padding: var(--spacing-8px); /* Теперь соответствует 8px сетке */
-      border-radius: var(--card-border-radius-8px); /* Скругляем углы кнопки закрытия, теперь соответствует 8px сетке */
+      border-radius: var(
+        --card-border-radius-8px
+      ); /* Скругляем углы кнопки закрытия, теперь соответствует 8px сетке */
       margin-left: var(--spacing-8px); /* Отступ от заголовка, теперь соответствует 8px сетке */
 
       &:hover {
@@ -453,7 +466,9 @@
   .window-controls-container {
     display: flex !important;
     align-items: center;
-    height: var(--window-controls-height); /* Устанавливаем высоту тулбара в соответствии с переменной */
+    height: var(
+      --window-controls-height
+    ); /* Устанавливаем высоту тулбара в соответствии с переменной */
     z-index: 1001;
     gap: var(--spacing-8px);
     background: rgba(0, 0, 0, 0);

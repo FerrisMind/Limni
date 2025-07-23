@@ -122,7 +122,11 @@
     justify-content: center;
     min-height: 100%;
     padding: var(--spacing-32px);
-    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%); /* Использование переменных для градиента */
+    background: linear-gradient(
+      135deg,
+      var(--bg-primary) 0%,
+      var(--bg-secondary) 100%
+    ); /* Использование переменных для градиента */
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 

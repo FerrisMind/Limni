@@ -29,9 +29,7 @@ describe('AddressBar Auto-resize', () => {
     expect(toolbarContent).toMatch(/\.center-section[\s\S]*?flex:\s*1/);
 
     // Проверяем, что добавлены отступы
-    expect(toolbarContent).toMatch(
-      /\.center-section[\s\S]*?margin:\s*0\s+var\(--spacing-16px\)/
-    );
+    expect(toolbarContent).toMatch(/\.center-section[\s\S]*?margin:\s*0\s+var\(--spacing-16px\)/);
 
     // Проверяем, что justify-content изменён на stretch
     expect(toolbarContent).toMatch(/\.center-section[\s\S]*?justify-content:\s*stretch/);

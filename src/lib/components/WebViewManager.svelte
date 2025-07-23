@@ -288,7 +288,10 @@
 
   .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(192px, 1fr)); /* Было 200px, изменено на 192px для 8px сетки */
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(192px, 1fr)
+    ); /* Было 200px, изменено на 192px для 8px сетки */
     gap: var(--spacing-16px);
     margin-bottom: var(--spacing-32px); /* 2rem */
   }
