@@ -185,28 +185,24 @@ pub async fn navigate_webview_impl(
     
     if let Some(webview_label) = webviews.get(&tab_id) {
         if let Some(webview) = app.get_webview(webview_label) {
-            // Для навигации в webview используем eval с window.location
-            let script = format!(r#"window.location.href = \"{}\";"#, url);
-            match webview.eval(&script) {
-                Ok(_) => {},
-                Err(e) => {
-                    // Отправляем событие ошибки загрузки
-                    let error_message = format!("Ошибка навигации: {}", e);
-                    let _ = app.emit("webview-load-error", serde_json::json!({
-                        "tabId": tab_id,
-                        "errorMessage": error_message
-                    }));
-                    return Err(error_message);
-                }
-            }
+            // Навигация в существующем webview
+            let webview_url = if url.starts_with("http://") || url.starts_with("https://") || url.starts_with("file://") {
+                url.parse().map_err(|e| format!("Invalid URL: {}", e))?
+            } else {
+                return Err(format!("Unsupported URL scheme for navigation: {}", url));
+            };
+            
+            webview.navigate(webview_url)
+                .map_err(|e| format!("Failed to navigate webview: {}", e))?;
+            
+            println!("🦀 Rust: Navigated existing webview for tab {} to {}", tab_id, url);
+            Ok(())
         } else {
-            return Err("Webview not found".to_string());
+            Err("Webview not found".to_string())
         }
     } else {
-        return Err("Tab not found".to_string());
+        Err("Tab not found".to_string())
     }
-    
-    Ok(())
 }
 
 /// Обрабатывает загрузку страницы

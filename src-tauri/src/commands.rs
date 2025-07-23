@@ -1,6 +1,7 @@
 use tauri::{AppHandle, Manager, Emitter};
 use crate::state::WebviewState;
 use crate::webview::{create_tab_webview_impl, show_tab_webview_impl, hide_all_webviews_impl, close_tab_webview_impl, navigate_webview_impl};
+use crate::utils::{fetch_page_title_backend};
 use std::time::SystemTime;
 
 /// Команда для создания нового CHILD webview для вкладки (embedded, ниже UI)
@@ -36,16 +37,6 @@ pub async fn close_tab_webview(
     tab_id: String,
 ) -> Result<(), String> {
     close_tab_webview_impl(app, tab_id).await
-}
-
-/// Команда для навигации в webview
-#[tauri::command]
-pub async fn navigate_webview(
-    app: AppHandle,
-    tab_id: String,
-    url: String,
-) -> Result<(), String> {
-    navigate_webview_impl(app, tab_id, url).await
 }
 
 /// Команда для получения текущего URL webview
@@ -90,6 +81,16 @@ pub async fn update_webview_title(
     Ok(())
 }
 
+/// Команда для навигации в существующем webview
+#[tauri::command]
+pub async fn navigate_webview(
+    app: AppHandle,
+    tab_id: String,
+    url: String,
+) -> Result<(), String> {
+    navigate_webview_impl(app, tab_id, url).await
+}
+
 /// Команда для перехода на домашнюю страницу
 #[tauri::command]
 pub async fn navigate_to_home(
@@ -100,7 +101,7 @@ pub async fn navigate_to_home(
     // Используем переданный URL или домашнюю страницу по умолчанию
     let url = home_url.unwrap_or_else(|| "https://www.google.com".to_string());
     
-    // Используем существующую функцию навигации
+    // Используем функцию навигации
     navigate_webview_impl(app, tab_id, url).await
 }
 
@@ -204,6 +205,72 @@ pub async fn get_webview_info(app: AppHandle) -> Result<Vec<String>, String> {
 #[tauri::command]
 pub async fn fetch_favicon_backend(url: String) -> Result<String, String> {
     crate::utils::fetch_favicon_backend(url).await
+}
+
+/// Команда для перезагрузки вкладки
+#[tauri::command]
+pub async fn reload_tab(
+    app: AppHandle,
+    tab_id: String,
+) -> Result<(), String> {
+    let state = app.state::<WebviewState>();
+    let webviews = state.webviews.lock().unwrap();
+    
+    if let Some(webview_label) = webviews.get(&tab_id) {
+        if let Some(webview) = app.get_webview(webview_label) {
+            webview.eval("window.location.reload()")
+                .map_err(|e| format!("Failed to reload webview: {}", e))?;
+            Ok(())
+        } else {
+            Err("Webview not found".to_string())
+        }
+    } else {
+        Err("Tab not found".to_string())
+    }
+}
+
+/// Команда для навигации назад
+#[tauri::command]
+pub async fn navigate_back(
+    app: AppHandle,
+    tab_id: String,
+) -> Result<(), String> {
+    let state = app.state::<WebviewState>();
+    let webviews = state.webviews.lock().unwrap();
+    
+    if let Some(webview_label) = webviews.get(&tab_id) {
+        if let Some(webview) = app.get_webview(webview_label) {
+            webview.eval("window.history.back()")
+                .map_err(|e| format!("Failed to navigate back: {}", e))?;
+            Ok(())
+        } else {
+            Err("Webview not found".to_string())
+        }
+    } else {
+        Err("Tab not found".to_string())
+    }
+}
+
+/// Команда для навигации вперед
+#[tauri::command]
+pub async fn navigate_forward(
+    app: AppHandle,
+    tab_id: String,
+) -> Result<(), String> {
+    let state = app.state::<WebviewState>();
+    let webviews = state.webviews.lock().unwrap();
+    
+    if let Some(webview_label) = webviews.get(&tab_id) {
+        if let Some(webview) = app.get_webview(webview_label) {
+            webview.eval("window.history.forward()")
+                .map_err(|e| format!("Failed to navigate forward: {}", e))?;
+            Ok(())
+        } else {
+            Err("Webview not found".to_string())
+        }
+    } else {
+        Err("Tab not found".to_string())
+    }
 }
 
 /// Возвращает скрипт для отключения звука

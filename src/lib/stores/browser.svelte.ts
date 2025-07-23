@@ -238,26 +238,57 @@ export async function updateTabUrl(tabId: string, url: string, _title?: string):
     tab.hasError = false; // Сбрасываем ошибку при новой навигации
     tab.errorMessage = undefined;
 
-    // Если у вкладки еще нет webview, создаем его
-    if (!tab.webviewLabel && url !== 'about:blank') {
-      const webviewLabel = await invoke<string>('create_tab_webview', {
-        tabId: tabId,
-        url: url,
-        title: 'Загрузка...',
-      });
-
-      tab.webviewLabel = webviewLabel;
-
-      // Если это активная вкладка, показываем webview
-      if (tab.isActive) {
-        await invoke('show_tab_webview', { tabId: tabId });
+    // Если у вкладки уже есть webview, используем навигацию
+    if (tab.webviewLabel && url !== 'about:blank') {
+      try {
+        await invoke('navigate_webview', {
+          tabId: tabId,
+          url: url,
+        });
+        console.log('🔄 Navigated existing webview for tab:', tabId, 'to:', url);
+      } catch (error) {
+        console.error('Navigation failed, creating new webview:', error);
+        // Если навигация не удалась, создаем новый webview
+        await invoke('close_tab_webview', { tabId: tabId });
+        tab.webviewLabel = undefined;
+        
+        const webviewLabel = await invoke<string>('create_tab_webview', {
+          tabId: tabId,
+          url: url,
+          title: 'Загрузка...',
+        });
+        tab.webviewLabel = webviewLabel;
+        
+        if (tab.isActive) {
+          await invoke('show_tab_webview', { tabId: tabId });
+        }
       }
-    } else if (tab.webviewLabel && url !== 'about:blank') {
-      // Навигируем существующий webview
-      await invoke('navigate_webview', {
-        tabId: tabId,
-        url: url,
-      });
+    } else {
+      // Закрываем существующий webview если он есть
+      if (tab.webviewLabel) {
+        try {
+          await invoke('close_tab_webview', { tabId: tabId });
+          tab.webviewLabel = undefined; // Сбрасываем метку старого webview
+        } catch (error) {
+          console.error('Ошибка закрытия старого webview при навигации:', error);
+        }
+      }
+
+      // Создаем новый webview для навигации (для about:blank не создаем)
+      if (url !== 'about:blank') {
+        const webviewLabel = await invoke<string>('create_tab_webview', {
+          tabId: tabId,
+          url: url,
+          title: 'Загрузка...',
+        });
+
+        tab.webviewLabel = webviewLabel;
+
+        // Если это активная вкладка, показываем новый webview
+        if (tab.isActive) {
+          await invoke('show_tab_webview', { tabId: tabId });
+        }
+      }
     }
 
     // Обновляем данные вкладки – временно показываем «Загрузка…»
@@ -274,18 +305,27 @@ export async function updateTabUrl(tabId: string, url: string, _title?: string):
     // Добавляем в общую историю
     if (url !== 'about:blank' && !url.startsWith('about:')) {
       // Историю запишем с URL, позже обновим при получении реального заголовка
-      addToHistory(url, url);
-      // Загружаем фавикон после навигации через бэкенд
+      addToHistory(tab.title, url);
+
+      // Принудительно запрашиваем favicon и title после навигации
+      // Эти вызовы могут быть убраны, если on_page_load и on_navigation станут надежными
       try {
         const faviconDataUrl = await invoke<string>('fetch_favicon_backend', { url: url });
         tab.favicon = faviconDataUrl;
       } catch (error) {
         console.error(`Failed to fetch favicon for ${url} via backend:`, error);
-        tab.favicon = undefined; // Очищаем, если не удалось загрузить
+        tab.favicon = undefined;
       }
-    } else {
-      tab.favicon = undefined; // Очищаем favicon для специальных URL
+
+      try {
+        const realTitle = await invoke<string>('fetch_page_title_backend', { url: url });
+        tab.title = realTitle;
+      } catch (error) {
+        console.error(`Failed to fetch real title for ${url} via backend:`, error);
+      }
     }
+
+    tab.isLoading = false; // Принудительно завершаем загрузку после попытки навигации
   } catch (error) {
     console.error('Ошибка навигации:', error);
     tab.isLoading = false;
