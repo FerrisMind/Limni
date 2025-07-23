@@ -238,6 +238,14 @@ export async function updateTabUrl(tabId: string, url: string, _title?: string):
     tab.hasError = false; // Сбрасываем ошибку при новой навигации
     tab.errorMessage = undefined;
 
+    // Пропускаем создание webview для data URLs (страницы ошибок)
+    if (url.startsWith('data:')) {
+      console.log('🚫 Skipping webview creation for data URL:', url.substring(0, 50) + '...');
+      tab.url = url;
+      tab.isLoading = false;
+      return;
+    }
+
     // Если у вкладки уже есть webview, используем навигацию
     if (tab.webviewLabel && url !== 'about:blank') {
       try {
@@ -309,19 +317,22 @@ export async function updateTabUrl(tabId: string, url: string, _title?: string):
 
       // Принудительно запрашиваем favicon и title после навигации
       // Эти вызовы могут быть убраны, если on_page_load и on_navigation станут надежными
-      try {
-        const faviconDataUrl = await invoke<string>('fetch_favicon_backend', { url: url });
-        tab.favicon = faviconDataUrl;
-      } catch (error) {
-        console.error(`Failed to fetch favicon for ${url} via backend:`, error);
-        tab.favicon = undefined;
-      }
+      // Пропускаем для data URLs (страницы ошибок)
+      if (!url.startsWith('data:')) {
+        try {
+          const faviconDataUrl = await invoke<string>('fetch_favicon_backend', { url: url });
+          tab.favicon = faviconDataUrl;
+        } catch (error) {
+          console.error(`Failed to fetch favicon for ${url} via backend:`, error);
+          tab.favicon = undefined;
+        }
 
-      try {
-        const realTitle = await invoke<string>('fetch_page_title_backend', { url: url });
-        tab.title = realTitle;
-      } catch (error) {
-        console.error(`Failed to fetch real title for ${url} via backend:`, error);
+        try {
+          const realTitle = await invoke<string>('fetch_page_title_backend', { url: url });
+          tab.title = realTitle;
+        } catch (error) {
+          console.error(`Failed to fetch real title for ${url} via backend:`, error);
+        }
       }
     }
 

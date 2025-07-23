@@ -116,20 +116,21 @@
     --line-height-24px: 32px;
 
     /* Интерактивные элементы: Кнопки */
-    --button-height-small: 28px;
-    --button-height-medium: 32px;
-    --button-height-large: 40px;
+    --button-height-small: 24px; /* Уменьшено с 28px до 24px */
+    --button-height-medium: 28px; /* Уменьшено с 32px до 28px */
+    --button-height-large: 32px; /* Уменьшено с 40px до 32px */
     --button-padding-horizontal-small: 8px;
-    --button-padding-horizontal-medium: 12px;
-    --button-padding-horizontal-large: 16px;
+    --button-padding-horizontal-medium: 8px; /* Уменьшено с 12px до 8px */
+    --button-padding-horizontal-large: 12px; /* Уменьшено с 16px до 12px */
     --button-border-radius-4px: 4px;
     --button-border-radius-6px: 6px;
+    --button-border-radius-8px: 8px;
 
     /* Интерактивные элементы: Поля ввода */
-    --input-height-32px: 32px;
-    --input-height-36px: 36px;
-    --input-padding-8px: 8px;
-    --input-padding-12px: 12px;
+    --input-height-32px: 28px; /* Уменьшено с 32px до 28px */
+    --input-height-36px: 32px; /* Уменьшено с 36px до 32px */
+    --input-padding-8px: 6px; /* Уменьшено с 8px до 6px */
+    --input-padding-12px: 8px; /* Уменьшено с 12px до 8px */
     --input-border-radius-4px: 4px;
     --input-border-width-1px: 1px;
     --input-focus-outline-2px: 2px;
@@ -140,49 +141,49 @@
     --checkbox-border-radius-2px: 2px;
 
     /* Карточки и контейнеры: Карточки */
-    --card-padding-16px: 16px;
-    --card-padding-20px: 20px;
+    --card-padding-16px: 12px; /* Уменьшено с 16px до 12px */
+    --card-padding-20px: 16px; /* Уменьшено с 20px до 16px */
     --card-border-radius-8px: 8px;
     --card-border-width-1px: 1px;
     --card-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
 
     /* Карточки и контейнеры: Модальные окна */
-    --modal-padding-24px: 24px;
+    --modal-padding-24px: 20px; /* Уменьшено с 24px до 20px */
     --modal-border-radius-8px: 8px;
     --modal-border-radius-12px: 12px;
-    --modal-min-offset-24px: 24px;
+    --modal-min-offset-24px: 20px; /* Уменьшено с 24px до 20px */
 
     /* Навигация и меню: Горизонтальная навигация */
-    --horizontal-nav-height-48px: 48px;
-    --horizontal-nav-height-56px: 56px;
-    --horizontal-nav-item-padding-12px: 12px;
+    --horizontal-nav-height-48px: 40px; /* Уменьшено с 48px до 40px */
+    --horizontal-nav-height-56px: 48px; /* Уменьшено с 56px до 48px */
+    --horizontal-nav-item-padding-12px: 8px; /* Уменьшено с 12px до 8px */
     --horizontal-nav-item-spacing-4px: 4px;
     --horizontal-nav-item-spacing-8px: 8px;
 
     /* Навигация и меню: Боковая навигация */
-    --side-nav-width-240px: 240px;
-    --side-nav-width-280px: 280px;
-    --side-nav-item-height-36px: 36px;
-    --side-nav-item-height-40px: 40px;
-    --side-nav-item-padding-12px: 12px;
-    --side-nav-group-spacing-16px: 16px;
+    --side-nav-width-240px: 220px; /* Уменьшено с 240px до 220px */
+    --side-nav-width-280px: 260px; /* Уменьшено с 280px до 260px */
+    --side-nav-item-height-36px: 32px; /* Уменьшено с 36px до 32px */
+    --side-nav-item-height-40px: 36px; /* Уменьшено с 40px до 36px */
+    --side-nav-item-padding-12px: 8px; /* Уменьшено с 12px до 8px */
+    --side-nav-group-spacing-16px: 12px; /* Уменьшено с 16px до 12px */
 
     /* Сетки и списки: Списки */
-    --list-item-height-40px: 40px;
-    --list-item-height-48px: 48px;
-    --list-item-height-56px: 56px;
-    --list-item-padding-12px: 12px;
-    --list-item-padding-16px: 16px;
+    --list-item-height-40px: 32px; /* Уменьшено с 40px до 32px */
+    --list-item-height-48px: 40px; /* Уменьшено с 48px до 40px */
+    --list-item-height-56px: 48px; /* Уменьшено с 56px до 48px */
+    --list-item-padding-12px: 8px; /* Уменьшено с 12px до 8px */
+    --list-item-padding-16px: 12px; /* Уменьшено с 16px до 12px */
     --list-item-spacing-1px: 1px;
     --list-item-spacing-4px: 4px;
 
     /* Сетки и списки: Таблицы */
-    --table-row-height-40px: 40px;
-    --table-row-height-48px: 48px;
-    --table-cell-padding-8px: 8px;
-    --table-cell-padding-12px: 12px;
-    --table-header-height-36px: 36px;
-    --table-header-height-40px: 40px;
+    --table-row-height-40px: 32px; /* Уменьшено с 40px до 32px */
+    --table-row-height-48px: 40px; /* Уменьшено с 48px до 40px */
+    --table-cell-padding-8px: 6px; /* Уменьшено с 8px до 6px */
+    --table-cell-padding-12px: 8px; /* Уменьшено с 12px до 8px */
+    --table-header-height-36px: 32px; /* Уменьшено с 36px до 32px */
+    --table-header-height-40px: 36px; /* Уменьшено с 40px до 36px */
 
     /* Иконки */
     --icon-size-12px: 12px;
@@ -219,8 +220,8 @@
     --window-controls-height: var(--horizontal-nav-height-48px); /* Используем новые переменные */
     --toolbar-height: var(--horizontal-nav-height-48px); /* Используем новые переменные */
     --tabbar-height: var(--horizontal-nav-height-48px); /* Используем новые переменные */
-    --container-padding: var(--spacing-16px); /* Используем новые переменные */
-    --window-controls-width: 188px; /* Пока оставляем как есть, потребуется более детальный расчет */
+    --container-padding: var(--spacing-12px); /* Уменьшено с 16px до 12px */
+    --window-controls-width: 0px; /* Уменьшено с 168px до 120px для увеличения зоны прокрутки вкладок */
 
     /* Цвета для темной темы */
     --accent-color-light: rgba(47, 107, 255, 0.1);

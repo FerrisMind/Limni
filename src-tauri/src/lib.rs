@@ -27,6 +27,7 @@ pub fn run() {
             navigate_to_home,
             get_webview_info,
             fetch_favicon_backend,
+            fetch_page_title_backend,
             get_webview_url,
             update_webview_title,
             open_url_in_new_tab,

@@ -295,7 +295,7 @@
 
   .nav-controls {
     display: flex;
-    gap: var(--spacing-4px);
+    gap: var(--spacing-2px); /* Уменьшено с 4px до 2px */
     align-items: center;
   }
 
@@ -326,7 +326,7 @@
 
   .action-controls {
     display: flex;
-    gap: var(--spacing-4px);
+    gap: var(--spacing-2px); /* Уменьшено с 4px до 2px */
     align-items: center;
   }
 
@@ -378,18 +378,18 @@
     }
 
     .nav-controls {
-      gap: var(--spacing-4px); /* 4px gap согласно сетке */
+      gap: var(--spacing-2px); /* Уменьшено с 4px до 2px */
     }
 
     .action-controls {
-      gap: var(--spacing-4px); /* 4px gap согласно сетке */
+      gap: var(--spacing-2px); /* Уменьшено с 4px до 2px */
     }
   }
 
   @media (max-width: 480px) {
     .center-section {
       min-width: 96px; /* Минимальная ширина на мобильных, изменено на 96px для 8px сетки */
-      margin: 0 var(--spacing-4px); /* Минимальные отступы на мобильных */
+      margin: 0 var(--spacing-2px); /* Уменьшено с 4px до 2px */
     }
 
     .toolbar {

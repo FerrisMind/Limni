@@ -49,70 +49,95 @@
 
     return 'Произошла ошибка при загрузке страницы. Попробуйте перезагрузить.';
   }
+
+  function isDataUrl(url?: string): boolean {
+    return url?.startsWith('data:text/html') || false;
+  }
+
+  function extractHtmlFromDataUrl(url?: string): string {
+    if (!url || !url.startsWith('data:text/html')) return '';
+    try {
+      const base64Part = url.split(',')[1];
+      if (base64Part) {
+        return decodeURIComponent(base64Part);
+      }
+    } catch (error) {
+      console.error('Error extracting HTML from data URL:', error);
+    }
+    return '';
+  }
 </script>
 
 <div class="error-page">
-  <div class="error-content">
-    <div class="error-icon">
-      <svg
-        width="64"
-        height="64"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx="12" cy="12" r="10" stroke="#ef4444" stroke-width="2" />
-        <line x1="15" y1="9" x2="9" y2="15" stroke="#ef4444" stroke-width="2" />
-        <line x1="9" y1="9" x2="15" y2="15" stroke="#ef4444" stroke-width="2" />
-      </svg>
+  {#if isDataUrl(tab.url)}
+    <!-- Отображение HTML контента из data URL -->
+    <div class="data-url-content">
+      {@html extractHtmlFromDataUrl(tab.url)}
     </div>
-
-    <h1 class="error-title">{getErrorTitle(tab.errorMessage)}</h1>
-
-    <p class="error-description">
-      {getErrorDescription(tab.errorMessage)}
-    </p>
-
-    <div class="error-url">
-      <strong>URL:</strong>
-      {tab.url}
-    </div>
-
-    {#if tab.errorMessage}
-      <details class="error-details">
-        <summary>Техническая информация</summary>
-        <code class="error-code">{tab.errorMessage}</code>
-      </details>
-    {/if}
-
-    <div class="error-actions">
-      <button class="reload-button" onclick={handleReload}>
+  {:else}
+    <!-- Стандартная страница ошибки -->
+    <div class="error-content">
+      <div class="error-icon">
         <svg
-          width="16"
-          height="16"
+          width="64"
+          height="64"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <path
-            d="M1 4v6h6"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+          <circle cx="12" cy="12" r="10" stroke="#ef4444" stroke-width="2" />
+          <line x1="15" y1="9" x2="9" y2="15" stroke="#ef4444" stroke-width="2" />
+          <line x1="9" y1="9" x2="15" y2="15" stroke="#ef4444" stroke-width="2" />
         </svg>
-        Перезагрузить страницу
-      </button>
+      </div>
+
+      <h1 class="error-title">{getErrorTitle(tab.errorMessage)}</h1>
+
+      <p class="error-description">
+        {getErrorDescription(tab.errorMessage)}
+      </p>
+
+      <div class="error-url">
+        <strong>URL:</strong>
+        {tab.url}
+      </div>
+
+      {#if tab.errorMessage}
+        <details class="error-details">
+          <summary>Техническая информация</summary>
+          <code class="error-code">{tab.errorMessage}</code>
+        </details>
+      {/if}
+
+      <div class="error-actions">
+        <button class="reload-button" onclick={handleReload}>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1 4v6h6"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Перезагрузить страницу
+        </button>
+      </div>
     </div>
-  </div>
+  {/if}
 </div>
 
 <style>
@@ -138,6 +163,13 @@
     border-radius: var(--card-border-radius-16px); /* 16px */
     box-shadow: var(--shadow-md);
     border: var(--card-border-width-1px) solid var(--border-color);
+  }
+
+  .data-url-content {
+    width: 100%;
+    height: 100vh;
+    background: var(--bg-primary);
+    overflow: auto;
   }
 
   .error-icon {

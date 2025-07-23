@@ -121,7 +121,7 @@
       {/if}
 
       <!-- Страница ошибки -->
-      {#if currentTab?.hasError}
+      {#if currentTab?.hasError || currentTab?.url?.startsWith('data:')}
         <ErrorPage tab={currentTab} />
       {/if}
     </div>
@@ -177,7 +177,7 @@
 
   .quick-links h3 {
     color: var(--text-primary);
-    margin-bottom: var(--spacing-24px); /* 1.5rem */
+    margin-bottom: var(--spacing-16px); /* Уменьшено с 24px до 16px */
     font-size: var(--font-size-20px);
     font-weight: 500;
   }
@@ -281,7 +281,7 @@
 
   .features-info h3 {
     color: var(--text-primary);
-    margin-bottom: var(--spacing-24px); /* 1.5rem */
+    margin-bottom: var(--spacing-16px); /* Уменьшено с 24px до 16px */
     font-size: var(--font-size-20px);
     font-weight: 500;
   }
@@ -292,15 +292,15 @@
       auto-fit,
       minmax(192px, 1fr)
     ); /* Было 200px, изменено на 192px для 8px сетки */
-    gap: var(--spacing-16px);
-    margin-bottom: var(--spacing-32px); /* 2rem */
+    gap: var(--spacing-12px); /* Уменьшено с 16px до 12px */
+    margin-bottom: var(--spacing-24px); /* Уменьшено с 32px до 24px */
   }
 
   .feature-item {
     display: flex;
     align-items: center;
-    gap: var(--spacing-16px);
-    padding: var(--spacing-16px);
+    gap: var(--spacing-12px); /* Уменьшено с 16px до 12px */
+    padding: var(--spacing-12px); /* Уменьшено с 16px до 12px */
     background: var(--bg-secondary);
     border: var(--card-border-width-1px) solid var(--border-color);
     border-radius: var(--card-border-radius-8px);
@@ -309,7 +309,7 @@
 
   .feature-item:hover {
     background: var(--btn-bg-hover);
-    transform: translateX(var(--spacing-8px)); /* Было 4px, изменено на 8px для 8px сетки */
+    transform: translateX(var(--spacing-4px)); /* Уменьшено с 8px до 4px */
   }
 
   .feature-icon {
@@ -322,14 +322,14 @@
   }
 
   .debug-section {
-    margin-top: var(--spacing-32px); /* 2rem */
+    margin-top: var(--spacing-24px); /* Уменьшено с 32px до 24px */
   }
 
   .debug-btn {
     background: var(--bg-secondary);
     border: var(--card-border-width-1px) solid var(--border-color);
     color: var(--text-primary);
-    padding: var(--spacing-8px) var(--spacing-16px);
+    padding: var(--spacing-6px) var(--spacing-12px); /* Уменьшено с 8px/16px до 6px/12px */
     border-radius: var(--button-border-radius-8px);
     cursor: default;
     font-size: var(--font-size-14px);
@@ -360,10 +360,10 @@
   }
 
   .loading-spinner {
-    width: var(--spacing-48px);
-    height: var(--spacing-48px);
-    border: var(--spacing-8px) solid var(--border-color); /* Было 4px, изменено на 8px для 8px сетки */
-    border-top: var(--spacing-8px) solid var(--accent-color); /* Было 4px, изменено на 8px для 8px сетки */
+    width: var(--spacing-40px); /* Уменьшено с 48px до 40px */
+    height: var(--spacing-40px); /* Уменьшено с 48px до 40px */
+    border: var(--spacing-4px) solid var(--border-color); /* Уменьшено с 8px до 4px */
+    border-top: var(--spacing-4px) solid var(--accent-color); /* Уменьшено с 8px до 4px */
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-bottom: var(--spacing-24px); /* 1.5rem */

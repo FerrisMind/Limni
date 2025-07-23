@@ -1,7 +1,7 @@
 use tauri::{AppHandle, Manager, Emitter};
 use crate::state::WebviewState;
 use crate::webview::{create_tab_webview_impl, show_tab_webview_impl, hide_all_webviews_impl, close_tab_webview_impl, navigate_webview_impl};
-use crate::utils::{fetch_page_title_backend};
+// Импорт убран, так как fetch_page_title_backend теперь определена как команда Tauri
 use std::time::SystemTime;
 
 /// Команда для создания нового CHILD webview для вкладки (embedded, ниже UI)
@@ -205,6 +205,12 @@ pub async fn get_webview_info(app: AppHandle) -> Result<Vec<String>, String> {
 #[tauri::command]
 pub async fn fetch_favicon_backend(url: String) -> Result<String, String> {
     crate::utils::fetch_favicon_backend(url).await
+}
+
+/// Команда для получения заголовка страницы через бэкенд
+#[tauri::command]
+pub async fn fetch_page_title_backend(url: String) -> Result<String, String> {
+    crate::utils::fetch_page_title_backend(url).await
 }
 
 /// Команда для перезагрузки вкладки

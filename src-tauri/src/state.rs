@@ -8,5 +8,5 @@ pub struct WebviewState {
 }
 
 /// Константа для правильной высоты header'а
-/// TabBar + WindowControls (44px) + Toolbar (44px) = 88.0px
-pub const HEADER_HEIGHT: f64 = 89.0; 
+/// TabBar (40px) + Toolbar (40px) = 80.0px
+pub const HEADER_HEIGHT: f64 = 80.0; 
