@@ -182,39 +182,39 @@
     max-width: 90vw;
     height: calc(100vh - var(--tabbar-height) - var(--toolbar-height));
     background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: 12px 12px 0 0;
+    border: var(--card-border-width-1px) solid var(--border-color);
+    border-radius: var(--modal-border-radius-8px) var(--modal-border-radius-8px) 0 0; /* Было 12px, изменено на 8px для 8px сетки */
     display: flex;
     flex-direction: column;
     z-index: 1001; /* Увеличиваем z-index чтобы быть поверх webview'ов */
-    box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-md);
   }
 
   .panel-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-xl) var(--spacing-xl);
-    border-bottom: 1px solid var(--border-color);
+    padding: var(--modal-padding-24px) var(--modal-padding-24px);
+    border-bottom: var(--card-border-width-1px) solid var(--border-color);
     background: var(--bg-secondary);
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    border-radius: var(--modal-border-radius-8px) var(--modal-border-radius-8px) 0 0;
   }
 
   .panel-header h3 {
     margin: 0;
     color: var(--text-primary);
-    font-size: 20px;
+    font-size: var(--font-size-20px); /* Изменено на 20px */
     font-weight: 600;
   }
 
   .action-btn {
-    width: var(--btn-size-small);
-    height: var(--btn-size-small);
+    width: var(--button-height-medium);
+    height: var(--button-height-medium);
     border: none;
-    border-radius: var(--btn-border-radius);
+    border-radius: var(--button-border-radius-8px);
     background: var(--btn-bg);
     color: var(--text-primary);
-    font-size: var(--btn-icon-size);
+    font-size: var(--icon-size-16px);
     cursor: default;
     display: flex;
     align-items: center;
@@ -229,43 +229,43 @@
   .settings-content {
     flex: 1;
     overflow-y: auto;
-    padding: var(--spacing-xl);
+    padding: var(--modal-padding-24px);
   }
 
   .settings-section {
-    margin-bottom: 32px;
+    margin-bottom: var(--spacing-32px);
   }
 
   .settings-section h4 {
-    margin: 0 0 16px 0;
+    margin: 0 0 var(--spacing-16px) 0;
     color: var(--text-primary);
-    font-size: 16px;
+    font-size: var(--font-size-16px);
     font-weight: 600;
-    border-bottom: 2px solid var(--accent-color);
-    padding-bottom: 8px;
+    border-bottom: var(--input-focus-outline-2px) solid var(--accent-color);
+    padding-bottom: var(--spacing-8px);
   }
 
   .setting-item {
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: var(--spacing-24px);
   }
 
   .setting-label {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-8px);
     color: var(--text-primary);
     font-weight: 500;
   }
 
   .setting-input,
   .setting-select {
-    height: var(--btn-size-secondary);
-    padding: 0 var(--spacing-md);
-    border: 1px solid var(--border-color);
-    border-radius: var(--btn-border-radius);
+    height: var(--input-height-32px);
+    padding: 0 var(--input-padding-12px);
+    border: var(--input-border-width-1px) solid var(--border-color);
+    border-radius: var(--input-border-radius-4px);
     background: var(--bg-secondary);
     color: var(--text-primary);
-    font-size: var(--btn-font-size);
+    font-size: var(--font-size-14px);
     outline: none;
     transition: border-color 0.2s ease;
   }
@@ -273,17 +273,17 @@
   .setting-input:focus,
   .setting-select:focus {
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px var(--accent-color-light);
+    box-shadow: 0 0 0 var(--input-focus-outline-2px) var(--accent-color-light);
   }
 
   .theme-selector {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-md) var(--spacing-lg);
+    padding: var(--spacing-16px) var(--spacing-20px);
     background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--btn-border-radius);
+    border: var(--input-border-width-1px) solid var(--border-color);
+    border-radius: var(--input-border-radius-4px);
   }
 
   .theme-current {
@@ -292,12 +292,12 @@
   }
 
   .theme-btn {
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--button-padding-horizontal-small) var(--button-padding-horizontal-medium);
     border: none;
-    border-radius: var(--btn-border-radius);
+    border-radius: var(--button-border-radius-6px);
     background: var(--accent-color);
     color: white;
-    font-size: 12px;
+    font-size: var(--font-size-12px);
     cursor: default;
     transition: background-color 0.2s ease;
   }
@@ -310,13 +310,13 @@
   .setting-checkbox {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: var(--checkbox-text-spacing-8px);
     cursor: default;
   }
 
   .setting-checkbox input[type='checkbox'] {
-    width: 16px;
-    height: 16px;
+    width: var(--checkbox-size-16px);
+    height: var(--checkbox-size-16px);
     cursor: default;
   }
 
@@ -326,63 +326,63 @@
   }
 
   .setting-description {
-    margin: 8px 0 0 32px;
+    margin: var(--spacing-8px) 0 0 var(--spacing-32px);
     color: var(--text-secondary);
-    font-size: 12px;
-    line-height: 1.4;
+    font-size: var(--font-size-12px);
+    line-height: var(--line-height-14px); /* Changed to 1.4, which is 20px / 14px */
   }
 
   .about-info {
     display: flex;
-    gap: var(--spacing-xl);
+    gap: var(--spacing-24px);
   }
 
   .browser-info h5 {
-    margin: 0 0 8px 0;
+    margin: 0 0 var(--spacing-8px) 0;
     color: var(--text-primary);
-    font-size: 16px;
+    font-size: var(--font-size-16px);
     font-weight: 600;
   }
 
   .browser-info p {
-    margin: 4px 0;
+    margin: var(--spacing-8px) 0; /* Было 4px, изменено на 8px для 8px сетки */
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: var(--font-size-14px);
   }
 
   .feature-list h6 {
-    margin: 0 0 12px 0;
+    margin: 0 0 var(--spacing-16px) 0; /* Было 12px, изменено на 16px для 8px сетки */
     color: var(--text-primary);
-    font-size: 1rem;
+    font-size: var(--font-size-16px);
     font-weight: 600;
   }
 
   .feature-list ul {
     margin: 0;
-    padding-left: 24px;
+    padding-left: var(--spacing-24px);
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: var(--font-size-14px);
   }
 
   .feature-list li {
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-8px);
   }
 
   .settings-actions {
     display: flex;
     justify-content: center;
-    padding-top: 24px;
-    border-top: 1px solid var(--border-color);
-    margin-top: 24px;
+    padding-top: var(--spacing-24px);
+    border-top: var(--card-border-width-1px) solid var(--border-color);
+    margin-top: var(--spacing-24px);
   }
 
   .reset-btn {
-    padding: 12px 24px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    padding: var(--button-padding-horizontal-large) var(--spacing-24px); /* Было 12px 24px, изменено на 16px 24px для 8px сетки */
+    border: var(--card-border-width-1px) solid var(--border-color);
+    border-radius: var(--card-border-radius-8px);
     background: var(--bg-secondary);
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: var(--font-size-14px);
     cursor: default;
     transition: all 0.2s ease;
   }
@@ -394,7 +394,7 @@
 
   /* Scrollbar */
   .settings-content::-webkit-scrollbar {
-    width: 8px;
+    width: var(--spacing-8px);
   }
 
   .settings-content::-webkit-scrollbar-track {
@@ -403,7 +403,7 @@
 
   .settings-content::-webkit-scrollbar-thumb {
     background: var(--border-color);
-    border-radius: 4px;
+    border-radius: var(--card-border-radius-8px); /* Было 4px, изменено на 8px для 8px сетки */
   }
 
   .settings-content::-webkit-scrollbar-thumb:hover {
@@ -413,7 +413,7 @@
   @media (max-width: 768px) {
     .about-info {
       flex-direction: column;
-      gap: var(--spacing-lg);
+      gap: var(--spacing-16px);
     }
   }
 </style>

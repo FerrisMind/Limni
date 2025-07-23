@@ -264,7 +264,7 @@
     align-items: center;
     padding: var(--container-padding); /* Делаем одинаковые отступы со всех сторон (6px) */
     background: var(--bg-primary);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: var(--card-border-width-1px) solid var(--border-color);
     height: var(--toolbar-height);
     position: relative;
     z-index: 1000;
@@ -283,7 +283,7 @@
     display: flex;
     justify-content: stretch;
     min-width: 200px; /* Минимальная ширина для адресной строки */
-    margin: 0 var(--spacing-md); /* Отступы от левых и правых кнопок */
+    margin: 0 var(--spacing-16px); /* Отступы от левых и правых кнопок */
     transition: all 0.3s ease; /* Плавное изменение ширины */
   }
 
@@ -295,22 +295,22 @@
 
   .nav-controls {
     display: flex;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-4px);
     align-items: center;
   }
 
   .nav-btn {
-    width: var(--btn-size-small);
-    height: var(--btn-size-small);
+    width: var(--button-height-medium);
+    height: var(--button-height-medium);
     border: none; /* Удаляем обводку */
     background: var(--btn-bg);
     color: var(--text-primary);
-    border-radius: var(--btn-border-radius);
+    border-radius: var(--button-border-radius-8px);
     cursor: default;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--btn-icon-size);
+    font-size: var(--icon-size-16px);
     transition: all 0.2s ease;
     -webkit-app-region: no-drag !important;
   }
@@ -326,22 +326,22 @@
 
   .action-controls {
     display: flex;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-4px);
     align-items: center;
   }
 
   .action-btn {
-    width: var(--btn-size-small);
-    height: var(--btn-size-small);
+    width: var(--button-height-medium);
+    height: var(--button-height-medium);
     border: none; /* Удаляем обводку */
     background: var(--btn-bg);
     color: var(--text-primary);
-    border-radius: var(--btn-border-radius);
+    border-radius: var(--button-border-radius-8px);
     cursor: default;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--btn-icon-size);
+    font-size: var(--icon-size-16px);
     transition: all 0.2s ease;
     -webkit-app-region: no-drag !important;
   }
@@ -357,7 +357,7 @@
 
   .menu-burger {
     border: none; /* Удаляем обводку */
-    border-radius: var(--btn-border-radius); /* Возвращаем квадратную обводку */
+    border-radius: var(--button-border-radius-8px); /* Возвращаем квадратную обводку */
     outline: none; /* Убираем outline */
     box-shadow: none; /* Убираем box-shadow */
   }
@@ -370,30 +370,30 @@
   @media (max-width: 768px) {
     .center-section {
       min-width: 120px; /* Уменьшаем минимальную ширину на планшетах */
-      margin: 0 var(--spacing-sm); /* Уменьшаем отступы на планшетах */
+      margin: 0 var(--spacing-8px); /* Уменьшаем отступы на планшетах */
     }
 
     .toolbar {
-      padding: var(--container-padding) var(--spacing-lg); /* Сохраняем 44px высоту */
+      padding: var(--container-padding) var(--spacing-16px); /* Сохраняем 44px высоту */
     }
 
     .nav-controls {
-      gap: var(--spacing-xs); /* 4px gap согласно сетке */
+      gap: var(--spacing-4px); /* 4px gap согласно сетке */
     }
 
     .action-controls {
-      gap: var(--spacing-xs); /* 4px gap согласно сетке */
+      gap: var(--spacing-4px); /* 4px gap согласно сетке */
     }
   }
 
   @media (max-width: 480px) {
     .center-section {
-      min-width: 100px; /* Минимальная ширина на мобильных */
-      margin: 0 var(--spacing-xs); /* Минимальные отступы на мобильных */
+      min-width: 96px; /* Минимальная ширина на мобильных, изменено на 96px для 8px сетки */
+      margin: 0 var(--spacing-4px); /* Минимальные отступы на мобильных */
     }
 
     .toolbar {
-      padding: var(--container-padding) var(--spacing-md); /* 12px горизонтальный padding кратно 4px */
+      padding: var(--container-padding) var(--spacing-12px); /* 12px горизонтальный padding кратно 4px */
     }
   }
 
@@ -412,15 +412,15 @@
 
   .main-menu-dropdown {
     position: absolute;
-    top: calc(100% + 8px);
+    top: calc(100% + var(--spacing-8px));
     right: 0;
     min-width: 200px;
     background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: var(--card-border-width-1px) solid var(--border-color);
+    border-radius: var(--card-border-radius-8px); /* Было 12px, изменено на 8px для 8px сетки */
+    box-shadow: var(--shadow-lg);
     z-index: 1000;
-    padding: 8px 0;
+    padding: var(--spacing-8px) 0;
     animation: dropdownFadeIn 0.2s ease-out;
   }
 
@@ -439,13 +439,13 @@
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
+    gap: var(--spacing-8px); /* Было 12px, изменено на 8px для 8px сетки */
+    padding: var(--spacing-8px) var(--spacing-16px); /* Было 12px 16px, изменено на 8px 16px для 8px сетки */
     background: none;
     border: none;
     color: var(--text-primary);
     cursor: default;
-    font-size: 14px;
+    font-size: var(--font-size-14px);
     font-weight: 500;
     transition: background-color 0.2s ease;
     text-align: left;
@@ -456,9 +456,9 @@
   }
 
   .menu-item i {
-    font-size: 16px;
+    font-size: var(--icon-size-16px);
     color: var(--text-secondary);
-    width: 16px;
+    width: var(--icon-size-16px);
     text-align: center;
   }
 
@@ -467,8 +467,8 @@
   }
 
   .menu-separator {
-    height: 1px;
+    height: var(--spacing-1px);
     background: var(--border-color);
-    margin: 8px 12px;
+    margin: var(--spacing-8px) var(--spacing-16px); /* Было 8px 12px, изменено на 8px 16px для 8px сетки */
   }
 </style>

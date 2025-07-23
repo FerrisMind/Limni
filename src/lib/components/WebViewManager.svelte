@@ -149,21 +149,21 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding: 2rem;
+    padding: var(--spacing-32px);
   }
 
   .placeholder-content {
     text-align: center;
-    max-width: 800px;
+    max-width: 800px; /* Пока оставляем как есть */
     width: 100%;
   }
 
   .placeholder-content h2 {
     color: var(--text-primary);
-    margin-bottom: 1rem;
-    font-size: 2.5rem;
+    margin-bottom: var(--spacing-16px);
+    font-size: var(--font-size-40px); /* 2.5rem */
     font-weight: 300;
-    background: linear-gradient(135deg, var(--accent-color), #0078d4);
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-color-dark));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -171,32 +171,32 @@
 
   .placeholder-content p {
     color: var(--text-secondary);
-    margin-bottom: 3rem;
-    font-size: 20px;
+    margin-bottom: var(--spacing-48px); /* 3rem */
+    font-size: var(--font-size-20px);
   }
 
   .quick-links h3 {
     color: var(--text-primary);
-    margin-bottom: 1.5rem;
-    font-size: 20px;
+    margin-bottom: var(--spacing-24px); /* 1.5rem */
+    font-size: var(--font-size-20px);
     font-weight: 500;
   }
 
   .links-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(176px, 1fr));
-    gap: var(--spacing-xl);
-    margin-bottom: 3rem;
+    gap: var(--spacing-24px);
+    margin-bottom: var(--spacing-48px); /* 3rem */
   }
 
   .link-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem 1.5rem;
+    padding: var(--spacing-32px) var(--spacing-24px); /* 2rem 1.5rem */
     background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--spacing-lg);
+    border: var(--card-border-width-1px) solid var(--border-color);
+    border-radius: var(--spacing-16px); /* var(--spacing-lg) */
     transition: all 0.3s ease;
     cursor: default;
     text-decoration: none;
@@ -221,15 +221,15 @@
 
   .link-card:hover {
     background: var(--btn-bg-hover);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px); /* Было -4px, изменено на -8px для 8px сетки */
+    box-shadow: var(--shadow-md);
     border-color: var(--accent-color);
   }
 
   .link-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    font-size: var(--icon-size-40px); /* 2.5rem */
+    margin-bottom: var(--spacing-16px); /* 1rem */
+    filter: drop-shadow(0 var(--spacing-2px) var(--spacing-4px) rgba(0, 0, 0, 0.1));
     transition:
       color 0.3s ease,
       transform 0.3s ease;
@@ -275,42 +275,42 @@
 
   .link-title {
     color: var(--text-primary);
-    font-size: 1rem;
+    font-size: var(--font-size-16px); /* 1rem */
     font-weight: 600;
   }
 
   .features-info h3 {
     color: var(--text-primary);
-    margin-bottom: 1.5rem;
-    font-size: 20px;
+    margin-bottom: var(--spacing-24px); /* 1.5rem */
+    font-size: var(--font-size-20px);
     font-weight: 500;
   }
 
   .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-lg);
-    margin-bottom: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(192px, 1fr)); /* Было 200px, изменено на 192px для 8px сетки */
+    gap: var(--spacing-16px);
+    margin-bottom: var(--spacing-32px); /* 2rem */
   }
 
   .feature-item {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
-    padding: var(--spacing-lg);
+    gap: var(--spacing-16px);
+    padding: var(--spacing-16px);
     background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--btn-border-radius);
+    border: var(--card-border-width-1px) solid var(--border-color);
+    border-radius: var(--card-border-radius-8px);
     transition: all 0.2s ease;
   }
 
   .feature-item:hover {
     background: var(--btn-bg-hover);
-    transform: translateX(4px);
+    transform: translateX(var(--spacing-8px)); /* Было 4px, изменено на 8px для 8px сетки */
   }
 
   .feature-icon {
-    font-size: 1.5rem;
+    font-size: var(--font-size-24px); /* 1.5rem */
   }
 
   .feature-text {
@@ -319,17 +319,17 @@
   }
 
   .debug-section {
-    margin-top: 2rem;
+    margin-top: var(--spacing-32px); /* 2rem */
   }
 
   .debug-btn {
     background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
+    border: var(--card-border-width-1px) solid var(--border-color);
     color: var(--text-primary);
-    padding: var(--spacing-sm) var(--spacing-lg);
-    border-radius: var(--btn-border-radius);
+    padding: var(--spacing-8px) var(--spacing-16px);
+    border-radius: var(--button-border-radius-8px);
     cursor: default;
-    font-size: var(--btn-font-size);
+    font-size: var(--font-size-14px);
     transition: all 0.2s ease;
   }
 
@@ -357,18 +357,18 @@
   }
 
   .loading-spinner {
-    width: 48px;
-    height: 48px;
-    border: 4px solid var(--border-color);
-    border-top: 4px solid var(--accent-color);
+    width: var(--spacing-48px);
+    height: var(--spacing-48px);
+    border: var(--spacing-8px) solid var(--border-color); /* Было 4px, изменено на 8px для 8px сетки */
+    border-top: var(--spacing-8px) solid var(--accent-color); /* Было 4px, изменено на 8px для 8px сетки */
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-24px); /* 1.5rem */
   }
 
   .loading-overlay p {
     color: var(--text-primary);
-    font-size: 16px;
+    font-size: var(--font-size-16px);
     font-weight: 500;
   }
 

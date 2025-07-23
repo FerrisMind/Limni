@@ -9,7 +9,6 @@
   import SettingsPanel from '../lib/components/SettingsPanel.svelte';
   import ExtensionsPanel from '../lib/components/ExtensionsPanel.svelte';
   import DownloadsPanel from '../lib/components/DownloadsPanel.svelte';
-  import WindowControls from '../lib/components/WindowControls.svelte';
   import { getActiveTab, setTabAudioState } from '../lib/stores/browser.svelte.js';
   import { initializeGlobalHotkeys } from '../lib/utils/hotkeys.js';
 
@@ -35,7 +34,7 @@
 </script>
 
 <div class="browser">
-  <WindowControls />
+  <!-- <WindowControls /> -->
   <TabBar />
   <Toolbar />
   <WebViewManager />
@@ -70,52 +69,166 @@
   }
 
   /* Улучшенные переменные CSS для светлой темы */
-  :global(:root) {
-    --bg-primary: #f9f9fc;
-    --bg-secondary: #ffffff;
-    --bg-tertiary: #f5f5f7;
-    --text-primary: #1f2328;
-    --text-secondary: #667085;
-    --border-color: #dadde6;
-    --accent-color: #2f6bff;
-    --accent-color-light: rgba(47, 107, 255, 0.1);
-    --accent-color-dark: #1f5bef;
-    --btn-bg: transparent;
-    --btn-bg-hover: #e8e8e8;
+  :root {
+    /* Color Palette */
+    --accent-color: #007bff; /* Пример акцентного цвета */
+    --text-primary: #333;
+    --text-secondary: #666;
+    --bg-primary: #f0f0f0;
+    --bg-secondary: #fff;
+    --border-color: #ccc;
+    --btn-bg-hover: #e0e0e0;
+    --bg-tertiary: #f5f5f5; /* Добавлено для светлой темы */
+
+    /* System Shadows (25% opacity) */
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
     --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
-    --radius-sm: 8px;
+
+    /* Border Radii */
+    --radius-sm: 4px; /* Изменено на 4px */
     --radius-md: 8px;
-    --radius-lg: 12px;
+    --radius-lg: 12px; /* Изменено на 12px */
+
+    /* Базовая система размеров (4px = 1 unit) */
+    --spacing-1px: 1px;
+    --spacing-2px: 2px;
+    --spacing-4px: 4px;
+    --spacing-8px: 8px;
+    --spacing-12px: 12px;
+    --spacing-16px: 16px;
+    --spacing-20px: 20px;
+    --spacing-24px: 24px;
+    --spacing-32px: 32px;
+    --spacing-48px: 48px;
+    --spacing-64px: 64px;
+
+    /* Типографика */
+    --font-size-12px: 12px;
+    --font-size-14px: 14px;
+    --font-size-16px: 16px;
+    --font-size-18px: 18px;
+    --font-size-24px: 24px;
+    --font-size-32px: 32px;
+    --line-height-12px: 16px;
+    --line-height-14px: 20px;
+    --line-height-16px: 24px;
+    --line-height-24px: 32px;
+
+    /* Интерактивные элементы: Кнопки */
+    --button-height-small: 28px;
+    --button-height-medium: 32px;
+    --button-height-large: 40px;
+    --button-padding-horizontal-small: 8px;
+    --button-padding-horizontal-medium: 12px;
+    --button-padding-horizontal-large: 16px;
+    --button-border-radius-4px: 4px;
+    --button-border-radius-6px: 6px;
+
+    /* Интерактивные элементы: Поля ввода */
+    --input-height-32px: 32px;
+    --input-height-36px: 36px;
+    --input-padding-8px: 8px;
+    --input-padding-12px: 12px;
+    --input-border-radius-4px: 4px;
+    --input-border-width-1px: 1px;
+    --input-focus-outline-2px: 2px;
+
+    /* Интерактивные элементы: Чекбоксы и радиокнопки */
+    --checkbox-size-16px: 16px;
+    --checkbox-text-spacing-8px: 8px;
+    --checkbox-border-radius-2px: 2px;
+
+    /* Карточки и контейнеры: Карточки */
+    --card-padding-16px: 16px;
+    --card-padding-20px: 20px;
+    --card-border-radius-8px: 8px;
+    --card-border-width-1px: 1px;
+    --card-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    /* Карточки и контейнеры: Модальные окна */
+    --modal-padding-24px: 24px;
+    --modal-border-radius-8px: 8px;
+    --modal-border-radius-12px: 12px;
+    --modal-min-offset-24px: 24px;
+
+    /* Навигация и меню: Горизонтальная навигация */
+    --horizontal-nav-height-48px: 48px;
+    --horizontal-nav-height-56px: 56px;
+    --horizontal-nav-item-padding-12px: 12px;
+    --horizontal-nav-item-spacing-4px: 4px;
+    --horizontal-nav-item-spacing-8px: 8px;
+
+    /* Навигация и меню: Боковая навигация */
+    --side-nav-width-240px: 240px;
+    --side-nav-width-280px: 280px;
+    --side-nav-item-height-36px: 36px;
+    --side-nav-item-height-40px: 40px;
+    --side-nav-item-padding-12px: 12px;
+    --side-nav-group-spacing-16px: 16px;
+
+    /* Сетки и списки: Списки */
+    --list-item-height-40px: 40px;
+    --list-item-height-48px: 48px;
+    --list-item-height-56px: 56px;
+    --list-item-padding-12px: 12px;
+    --list-item-padding-16px: 16px;
+    --list-item-spacing-1px: 1px;
+    --list-item-spacing-4px: 4px;
+
+    /* Сетки и списки: Таблицы */
+    --table-row-height-40px: 40px;
+    --table-row-height-48px: 48px;
+    --table-cell-padding-8px: 8px;
+    --table-cell-padding-12px: 12px;
+    --table-header-height-36px: 36px;
+    --table-header-height-40px: 40px;
+
+    /* Иконки */
+    --icon-size-12px: 12px;
+    --icon-size-16px: 16px;
+    --icon-size-20px: 20px;
+    --icon-size-24px: 24px;
+    --icon-size-32px: 32px;
+
+    /* Отступы и компоновка: Внутри компонентов */
+    --component-spacing-related-4px: 4px;
+    --component-spacing-related-8px: 8px;
+    --component-spacing-group-12px: 12px;
+    --component-spacing-group-16px: 16px;
+    --component-padding-edges-12px: 12px;
+    --component-padding-edges-20px: 20px;
+
+    /* Отступы и компоновка: Между компонентами */
+    --between-components-tight-8px: 8px;
+    --between-components-tight-12px: 12px;
+    --between-components-normal-16px: 16px;
+    --between-components-normal-24px: 24px;
+    --between-sections-32px: 32px;
+    --between-sections-48px: 48px;
+    --between-main-blocks-64px: 64px;
+
+    /* Адаптивные контейнеры */
+    --content-max-width-1200px: 1200px;
+    --screen-offset-large-24px: 24px;
+    --screen-offset-large-32px: 32px;
+    --screen-offset-medium-16px: 16px;
+    --screen-offset-medium-20px: 20px;
+
+    /* Размеры основных элементов UI (старые переменные, которые будут заменены) */
+    --window-controls-height: var(--horizontal-nav-height-48px); /* Используем новые переменные */
+    --toolbar-height: var(--horizontal-nav-height-48px); /* Используем новые переменные */
+    --tabbar-height: var(--horizontal-nav-height-48px); /* Используем новые переменные */
+    --container-padding: var(--spacing-16px); /* Используем новые переменные */
+    --window-controls-width: 188px; /* Пока оставляем как есть, потребуется более детальный расчет */
+
+    /* Цвета для темной темы */
+    --accent-color-light: rgba(47, 107, 255, 0.1);
+    --accent-color-dark: #1f5bef;
+    --btn-bg: transparent;
     --success-color: #27ae60;
     --warning-color: #f39c12;
     --error-color: #e74c3c;
-
-    /* Единообразная система кнопок с сеткой 44px */
-    --btn-size-primary: 44px; /* Основной размер кнопок для touch targets (WCAG) */
-    --btn-size-secondary: 40px; /* Вторичный размер для компактных кнопок */
-    --btn-size-small: 36px; /* Малый размер для мелких элементов */
-    --btn-border-radius: 8px; /* Единообразное скругление кнопок */
-    --btn-icon-size: 16px; /* Стандартный размер иконок в кнопках */
-    --btn-font-size: 14px; /* Стандартный размер шрифта в кнопках */
-
-    /* Единообразная система отступов (сетка 4px) */
-    --spacing-xxs: 8px; /* Очень маленький отступ */
-    --spacing-xs: 4px; /* Минимальный отступ */
-    --spacing-sm: 8px; /* Малый отступ */
-    --spacing-md: 12px; /* Средний отступ */
-    --spacing-lg: 16px; /* Большой отступ */
-    --spacing-xl: 24px; /* Очень большой отступ */
-
-    /* Высоты контейнеров */
-    --window-controls-height: 40px;
-    --toolbar-height: 44px;
-    --tabbar-height: 44px;
-    --container-padding: 4px; /* (44px - 36px content) / 2 для центрирования */
-
-    /* Ширина WindowControls для резервирования места */
-    --window-controls-width: 188px; /* new-tab-btn(24) + gaps(16) + spacer(36) + buttons(108) + padding(4) */
   }
 
   /* Улучшенные переменные CSS для тёмной темы */
@@ -134,9 +247,9 @@
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-    --radius-sm: 8px;
+    --radius-sm: 4px; /* Изменено на 4px */
     --radius-md: 8px;
-    --radius-lg: 12px;
+    --radius-lg: 12px; /* Изменено на 12px */
     --success-color: #2ecc71;
     --warning-color: #f1c40f;
     --error-color: #e67e22;
@@ -157,36 +270,36 @@
 
   /* Размеры иконок */
   :global(.tab-icon) {
-    font-size: 16px;
-    margin-right: var(--spacing-sm);
+    font-size: var(--icon-size-16px);
+    margin-right: var(--spacing-8px);
   }
 
   :global(.link-icon) {
-    font-size: 24px;
-    margin-bottom: var(--spacing-sm);
+    font-size: var(--icon-size-24px);
+    margin-bottom: var(--spacing-8px);
   }
 
   :global(.empty-icon) {
-    font-size: 48px;
-    margin-bottom: var(--spacing-lg);
+    font-size: var(--icon-size-48px); /* 48px - новый размер для крупных иконок */
+    margin-bottom: var(--spacing-16px);
     color: var(--text-secondary);
   }
 
   :global(.bookmark-icon),
   :global(.history-icon) {
-    font-size: 16px;
-    margin-right: var(--spacing-md);
+    font-size: var(--icon-size-16px);
+    margin-right: var(--spacing-16px);
     color: var(--accent-color);
   }
 
   :global(.feature-icon) {
-    font-size: 1.5rem;
+    font-size: var(--font-size-24px); /* Пример: 1.5rem ~ 24px */
     color: var(--accent-color);
   }
 
   :global(.ph-check) {
-    color: #10b981;
-    margin-right: var(--spacing-sm);
+    color: var(--success-color);
+    margin-right: var(--spacing-8px);
   }
 
   /* Сброс стилей */
@@ -226,8 +339,8 @@
 
   /* Стили для скроллбаров */
   :global(::-webkit-scrollbar) {
-    width: 8px;
-    height: 8px;
+    width: var(--spacing-8px);
+    height: var(--spacing-8px);
   }
 
   :global(::-webkit-scrollbar-track) {
@@ -236,7 +349,7 @@
 
   :global(::-webkit-scrollbar-thumb) {
     background: var(--border-color);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
   }
 
   :global(::-webkit-scrollbar-thumb:hover) {
@@ -246,21 +359,21 @@
   /* Стили для тестовых элементов */
   .test-controls {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: var(--spacing-20px);
+    right: var(--spacing-20px);
     z-index: 9999;
   }
 
   .test-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
+    gap: var(--spacing-8px);
+    padding: var(--spacing-8px) var(--spacing-16px);
     background: var(--accent-color);
     color: white;
     border: none;
-    border-radius: 6px;
-    font-size: 14px;
+    border-radius: var(--button-border-radius-6px);
+    font-size: var(--font-size-14px);
     cursor: default;
     transition: background-color 0.2s ease;
   }

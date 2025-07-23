@@ -163,45 +163,45 @@
       var(--tabbar-height) + var(--toolbar-height)
     ); /* Правильная высота: 44px + 45px = 89px */
     right: 0;
-    width: 400px;
+    width: 400px; /* Пока оставляем как есть, потребуется более детальный расчет */
     height: calc(100vh - var(--tabbar-height) - var(--toolbar-height));
     background: var(--bg-primary);
-    border-left: 1px solid var(--border-color);
+    border-left: var(--card-border-width-1px) solid var(--border-color);
     display: flex;
     flex-direction: column;
-    z-index: 1001; /* Увеличиваем z-index чтобы быть поверх webview'ов */
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+    z-index: 1001; /* Увеличиваем z-index чтобы быть поверх webview\'ов */
+    box-shadow: var(--shadow-sm);
   }
 
   .panel-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-lg) var(--spacing-xl);
-    border-bottom: 1px solid var(--border-color);
+    padding: var(--spacing-16px) var(--spacing-24px); /* Соответствует 4px сетке */
+    border-bottom: var(--card-border-width-1px) solid var(--border-color);
     background: var(--bg-secondary);
   }
 
   .panel-header h3 {
     margin: 0;
     color: var(--text-primary);
-    font-size: 16px;
+    font-size: var(--font-size-16px);
     font-weight: 600;
   }
 
   .header-actions {
     display: flex;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-8px);
   }
 
   .action-btn {
-    width: var(--btn-size-small);
-    height: var(--btn-size-small);
+    width: var(--button-height-medium);
+    height: var(--button-height-medium);
     border: none;
-    border-radius: var(--btn-border-radius);
+    border-radius: var(--button-border-radius-8px);
     background: var(--btn-bg);
     color: var(--text-primary);
-    font-size: var(--btn-icon-size);
+    font-size: var(--icon-size-16px);
     cursor: default;
     display: flex;
     align-items: center;
@@ -214,36 +214,36 @@
   }
 
   .close-btn {
-    font-size: 20px;
+    font-size: var(--icon-size-20px);
   }
 
   .search-bar {
-    padding: var(--spacing-lg) var(--spacing-xl);
-    border-bottom: 1px solid var(--border-color);
+    padding: var(--spacing-16px) var(--spacing-24px);
+    border-bottom: var(--card-border-width-1px) solid var(--border-color);
   }
 
   .search-input {
     width: 100%;
-    height: 36px;
-    padding: 0 var(--spacing-md);
-    border: 1px solid var(--border-color);
-    border-radius: var(--spacing-lg);
+    height: var(--input-height-32px); /* Было 36px, изменено на 32px для 8px сетки */
+    padding: 0 var(--input-padding-12px);
+    border: var(--input-border-width-1px) solid var(--border-color);
+    border-radius: var(--card-border-radius-8px); /* Использование 8px радиуса для соответствия сетке */
     background: var(--bg-secondary);
     color: var(--text-primary);
-    font-size: var(--btn-font-size);
+    font-size: var(--font-size-14px);
     outline: none;
     transition: border-color 0.2s ease;
   }
 
   .search-input:focus {
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px var(--accent-color-light);
+    box-shadow: 0 0 0 var(--input-focus-outline-2px) var(--accent-color-light);
   }
 
   .history-content {
     flex: 1;
     overflow-y: auto;
-    padding: var(--spacing-lg) 0;
+    padding: var(--spacing-16px) 0;
   }
 
   .empty-state {
@@ -252,80 +252,80 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding: 2rem;
+    padding: var(--spacing-32px);
     text-align: center;
   }
 
   .empty-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+    font-size: var(--icon-size-48px);
+    margin-bottom: var(--spacing-16px);
     opacity: 0.5;
   }
 
   .empty-state p {
     color: var(--text-secondary);
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--spacing-8px);
   }
 
   .empty-hint {
-    font-size: 14px;
+    font-size: var(--font-size-14px);
     opacity: 0.7;
   }
 
   .history-list {
-    padding: 0 16px;
+    padding: 0 var(--spacing-16px);
   }
 
   .history-group {
-    margin-bottom: 24px;
+    margin-bottom: var(--spacing-24px);
   }
 
   .group-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8px;
-    padding: 8px 12px;
+    margin-bottom: var(--spacing-8px);
+    padding: var(--spacing-8px) var(--spacing-16px); /* Было 8px 12px, изменено на 8px 16px для 8px сетки */
     background: var(--bg-secondary);
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
+    border-radius: var(--card-border-radius-8px);
+    border: var(--card-border-width-1px) solid var(--border-color);
   }
 
   .group-header h4 {
     margin: 0;
     color: var(--text-primary);
-    font-size: 14px;
+    font-size: var(--font-size-14px);
     font-weight: 600;
   }
 
   .group-count {
     color: var(--text-secondary);
-    font-size: 12px;
+    font-size: var(--font-size-12px);
   }
 
   .history-item {
     display: flex;
     align-items: center;
-    padding: 12px 16px;
-    margin-bottom: 4px;
-    border-radius: 8px;
+    padding: var(--spacing-16px) var(--spacing-16px); /* Было 12px 16px, изменено на 16px 16px для 8px сетки */
+    margin-bottom: var(--spacing-8px); /* Было 4px, изменено на 8px для 8px сетки */
+    border-radius: var(--card-border-radius-8px);
     background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
+    border: var(--card-border-width-1px) solid var(--border-color);
     cursor: default;
     transition: all 0.2s ease;
-    gap: var(--spacing-md);
+    gap: var(--spacing-16px); /* Изменено на 16px */
     text-align: left;
     width: 100%;
   }
 
   .history-item:hover {
     background: var(--btn-bg-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(0px); /* Было -1px, изменено на 0px для 8px сетки */
+    box-shadow: var(--shadow-sm);
   }
 
   .history-icon {
-    font-size: 18px;
+    font-size: var(--icon-size-16px); /* Было 18px, изменено на 16px для 8px сетки */
     opacity: 0.7;
     flex-shrink: 0;
   }
@@ -338,16 +338,16 @@
   .history-title {
     font-weight: 500;
     color: var(--text-primary);
-    margin-bottom: 4px;
+    margin-bottom: var(--spacing-4px); /* Было 8px, изменено на 4px для 4px сетки */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 14px;
+    font-size: var(--font-size-14px);
   }
 
   .history-url {
     color: var(--text-secondary);
-    font-size: 12px;
+    font-size: var(--font-size-12px);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -355,13 +355,13 @@
 
   .history-date {
     color: var(--text-secondary);
-    font-size: 12px;
-    margin-top: 4px;
+    font-size: var(--font-size-12px);
+    margin-top: var(--spacing-8px); /* Было 4px, изменено на 8px для 8px сетки */
   }
 
   /* Scrollbar */
   .history-content::-webkit-scrollbar {
-    width: 8px;
+    width: var(--spacing-8px);
   }
 
   .history-content::-webkit-scrollbar-track {
@@ -370,7 +370,7 @@
 
   .history-content::-webkit-scrollbar-thumb {
     background: var(--border-color);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
   }
 
   .history-content::-webkit-scrollbar-thumb:hover {

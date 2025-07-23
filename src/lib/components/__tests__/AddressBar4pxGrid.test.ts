@@ -12,11 +12,11 @@ describe('AddressBar 4px Grid Compliance', () => {
     const addressBarContent = readFileSync(addressBarPath, 'utf-8');
 
     // Проверяем, что используются CSS переменные для отступов
-    expect(addressBarContent).toMatch(/margin:\s*var\(--spacing-xs\)\s*0/);
-    expect(addressBarContent).toMatch(/padding:\s*var\(--spacing-sm\)\s*var\(--spacing-xs\)/);
-    expect(addressBarContent).toMatch(/padding:\s*0\s*var\(--spacing-sm\)/);
-    expect(addressBarContent).toMatch(/padding:\s*var\(--spacing-sm\)/);
-    expect(addressBarContent).toMatch(/margin-right:\s*var\(--spacing-xs\)/);
+    expect(addressBarContent).toMatch(/margin:\s*var\(--spacing-4px\)\s*0/);
+    expect(addressBarContent).toMatch(/padding:\s*var\(--spacing-8px\)\s*var\(--spacing-4px\)/);
+    expect(addressBarContent).toMatch(/padding:\s*0\s*var\(--spacing-8px\)/);
+    expect(addressBarContent).toMatch(/padding:\s*var\(--spacing-8px\)/);
+    expect(addressBarContent).toMatch(/margin-right:\s*var\(--spacing-4px\)/);
   });
 
   it('должен использовать стандартные CSS переменные для border-radius', () => {
@@ -24,7 +24,8 @@ describe('AddressBar 4px Grid Compliance', () => {
     const addressBarContent = readFileSync(addressBarPath, 'utf-8');
 
     // Проверяем использование стандартной переменной для border-radius
-    expect(addressBarContent).toMatch(/border-radius:\s*var\(--btn-border-radius\)/);
+    expect(addressBarContent).toMatch(/border-radius:\s*var\(--input-border-radius-4px\)/);
+    expect(addressBarContent).toMatch(/border-radius:\s*var\(--button-border-radius-8px\)/);
   });
 
   it('должен иметь правильные отступы согласно 4px сетке', () => {
@@ -32,10 +33,9 @@ describe('AddressBar 4px Grid Compliance', () => {
     const rootPageContent = readFileSync(rootPagePath, 'utf-8');
 
     // Проверяем определение CSS переменных для 4px сетки
-    expect(rootPageContent).toMatch(/--spacing-xs:\s*4px/);
-    expect(rootPageContent).toMatch(/--spacing-sm:\s*8px/);
-    expect(rootPageContent).toMatch(/--spacing-md:\s*12px/);
-    expect(rootPageContent).toMatch(/--btn-border-radius:\s*8px/);
+    expect(rootPageContent).toMatch(/--spacing-4px:\s*4px/);
+    expect(rootPageContent).toMatch(/--spacing-8px:\s*8px/);
+    expect(rootPageContent).toMatch(/--spacing-12px:\s*12px/);
   });
 
   it('должен иметь корректную структуру отступов в контейнере', () => {
@@ -44,15 +44,17 @@ describe('AddressBar 4px Grid Compliance', () => {
 
     // Проверяем структуру отступов в address-input-container
     expect(addressBarContent).toMatch(
-      /\.address-input-container[\s\S]*?margin:\s*var\(--spacing-xs\)\s*0/
+      /\.address-input-container[\s\S]*?margin:\s*var\(--spacing-4px\)\s*0;/
     );
+  });
+
+  it('должен иметь корректные отступы в input элементе', () => {
+    const addressBarPath = join(__dirname, '../AddressBar.svelte');
+    const addressBarContent = readFileSync(addressBarPath, 'utf-8');
 
     // Проверяем отступы в input элементе
     expect(addressBarContent).toMatch(
-      /\.address-input[\s\S]*?padding:\s*var\(--spacing-sm\)\s*var\(--spacing-xs\)/
+      /\.address-input[\s\S]*?padding:\s*var\(--spacing-8px\)\s*var\(--spacing-4px\);/
     );
-
-    // Проверяем отступы в кнопке
-    expect(addressBarContent).toMatch(/\.go-btn[\s\S]*?margin-right:\s*var\(--spacing-xs\)/);
   });
 });

@@ -14,7 +14,7 @@ describe('AddressBar Auto-resize', () => {
     // Проверяем, что адресная строка имеет flex: 1 и width: 100%
     expect(addressBarContent).toContain('flex: 1');
     expect(addressBarContent).toContain('width: 100%');
-    expect(addressBarContent).toContain('margin: var(--spacing-xs) 0');
+    expect(addressBarContent).toContain('margin: var(--spacing-4px) 0');
 
     // Проверяем, что убрали max-width ограничение
     expect(addressBarContent).not.toContain('max-width: 600px');
@@ -29,7 +29,9 @@ describe('AddressBar Auto-resize', () => {
     expect(toolbarContent).toMatch(/\.center-section[\s\S]*?flex:\s*1/);
 
     // Проверяем, что добавлены отступы
-    expect(toolbarContent).toMatch(/\.center-section[\s\S]*?margin:\s*0\s+var\(--spacing-md\)/);
+    expect(toolbarContent).toMatch(
+      /\.center-section[\s\S]*?margin:\s*0\s+var\(--spacing-16px\)/
+    );
 
     // Проверяем, что justify-content изменён на stretch
     expect(toolbarContent).toMatch(/\.center-section[\s\S]*?justify-content:\s*stretch/);
@@ -54,12 +56,12 @@ describe('AddressBar Auto-resize', () => {
 
     // Проверяем адаптивные стили для планшетов
     expect(toolbarContent).toMatch(
-      /@media\s*\(max-width:\s*768px\)[\s\S]*?\.center-section[\s\S]*?margin:\s*0\s+var\(--spacing-sm\)/
+      /@media\s*\(max-width:\s*768px\)[\s\S]*?\.center-section[\s\S]*?margin:\s*0\s+var\(--spacing-8px\)/
     );
 
     // Проверяем адаптивные стили для мобильных
     expect(toolbarContent).toMatch(
-      /@media\s*\(max-width:\s*480px\)[\s\S]*?\.center-section[\s\S]*?margin:\s*0\s+var\(--spacing-xs\)/
+      /@media\s*\(max-width:\s*480px\)[\s\S]*?\.center-section[\s\S]*?margin:\s*0\s+var\(--spacing-4px\)/
     );
   });
 

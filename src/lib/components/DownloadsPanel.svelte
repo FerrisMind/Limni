@@ -156,14 +156,14 @@
   .downloads-panel {
     position: absolute;
     top: 100%;
-    right: 100px;
-    width: 400px;
+    right: var(--spacing-96px); /* Было 100px, изменено на 96px для 8px сетки */
+    width: 400px; /* Пока оставляем как есть, потребуется более детальный расчет */
     background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: var(--card-border-width-1px) solid var(--border-color);
+    border-radius: var(--card-border-radius-8px); /* Было 12px, изменено на 8px для 8px сетки */
+    box-shadow: var(--shadow-lg); /* Изменено на shadow-lg */
     z-index: 1000;
-    max-height: 500px;
+    max-height: 496px; /* Было 500px, изменено на 496px для 8px сетки */
     overflow-y: auto;
   }
 
@@ -171,29 +171,29 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--spacing-lg);
-    border-bottom: 1px solid var(--border-color);
+    padding: var(--spacing-16px); /* Соответствует 4px сетке */
+    border-bottom: var(--card-border-width-1px) solid var(--border-color);
   }
 
   .panel-header h3 {
     margin: 0;
-    font-size: 16px;
+    font-size: var(--font-size-16px);
     font-weight: 600;
     color: var(--text-primary);
   }
 
   .close-btn {
-    width: var(--btn-size-small);
-    height: var(--btn-size-small);
+    width: var(--button-height-medium);
+    height: var(--button-height-medium);
     border: none;
     background: transparent;
     color: var(--text-secondary);
-    border-radius: var(--btn-border-radius);
+    border-radius: var(--button-border-radius-8px);
     cursor: default;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--btn-icon-size);
+    font-size: var(--icon-size-16px);
   }
 
   .close-btn:hover {
@@ -202,20 +202,20 @@
   }
 
   .downloads-list {
-    padding: var(--spacing-sm);
+    padding: var(--spacing-8px);
   }
 
   .empty-state {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 32px;
+    padding: var(--spacing-32px);
     color: var(--text-secondary);
   }
 
   .empty-state i {
-    font-size: 48px;
-    margin-bottom: 12px;
+    font-size: var(--icon-size-48px);
+    margin-bottom: var(--spacing-16px); /* Было 12px, изменено на 16px для 8px сетки */
     opacity: 0.5;
   }
 
@@ -223,10 +223,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--spacing-md);
-    border-radius: var(--btn-border-radius);
+    padding: var(--spacing-16px);
+    border-radius: var(--card-border-radius-8px);
     transition: background-color 0.2s ease;
-    gap: var(--spacing-md);
+    gap: var(--spacing-16px);
   }
 
   .download-item:hover {
@@ -236,13 +236,13 @@
   .download-info {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: var(--spacing-16px);
     flex: 1;
     min-width: 0;
   }
 
   .file-icon {
-    font-size: 24px;
+    font-size: var(--icon-size-24px);
     flex-shrink: 0;
   }
 
@@ -252,7 +252,7 @@
   }
 
   .filename {
-    font-size: 14px;
+    font-size: var(--font-size-14px);
     color: var(--text-primary);
     font-weight: 500;
     overflow: hidden;
@@ -262,9 +262,9 @@
 
   .file-meta {
     display: flex;
-    gap: var(--spacing-sm);
-    margin-top: var(--spacing-xs);
-    font-size: 12px;
+    gap: var(--spacing-8px);
+    margin-top: var(--spacing-4px);
+    font-size: var(--font-size-12px);
   }
 
   .file-size {
@@ -276,7 +276,7 @@
   }
 
   .file-status.completed {
-    color: #10b981;
+    color: var(--success-color);
   }
 
   .file-status.downloading {
@@ -284,43 +284,43 @@
   }
 
   .file-status.failed {
-    color: #ef4444;
+    color: var(--error-color);
   }
 
   .progress-bar {
     width: 100%;
-    height: var(--spacing-xs);
+    height: var(--spacing-4px);
     background: var(--bg-secondary);
-    border-radius: 2px;
-    margin-top: var(--spacing-sm);
+    border-radius: var(--radius-sm); /* Было 2px, изменено на 4px для 4px сетки */
+    margin-top: var(--spacing-8px);
     overflow: hidden;
   }
 
   .progress-fill {
     height: 100%;
     background: var(--accent-color);
-    border-radius: 2px;
+    border-radius: var(--radius-sm); /* Было 2px, изменено на 4px для 4px сетки */
     transition: width 0.3s ease;
   }
 
   .download-actions {
     display: flex;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-8px);
     flex-shrink: 0;
   }
 
   .action-btn {
-    width: var(--btn-size-small);
-    height: var(--btn-size-small);
+    width: var(--button-height-medium);
+    height: var(--button-height-medium);
     border: none;
     background: transparent;
     color: var(--text-secondary);
-    border-radius: var(--btn-border-radius);
+    border-radius: var(--button-border-radius-8px);
     cursor: default;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--btn-icon-size);
+    font-size: var(--icon-size-16px);
     transition: all 0.2s ease;
   }
 
@@ -330,32 +330,32 @@
   }
 
   .action-btn.danger:hover {
-    color: #ef4444;
+    color: var(--error-color);
   }
 
   .panel-footer {
-    padding: var(--spacing-lg);
-    border-top: 1px solid var(--border-color);
+    padding: var(--spacing-16px);
+    border-top: var(--card-border-width-1px) solid var(--border-color);
   }
 
   .clear-all-btn {
     width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
-    border: 1px solid var(--border-color);
+    padding: var(--button-padding-horizontal-small) var(--button-padding-horizontal-medium);
+    border: var(--card-border-width-1px) solid var(--border-color);
     background: transparent;
     color: var(--text-secondary);
-    border-radius: 6px;
+    border-radius: var(--button-border-radius-8px);
     cursor: default;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-sm);
-    font-size: var(--btn-font-size);
+    gap: var(--spacing-8px);
+    font-size: var(--font-size-14px);
     transition: all 0.2s ease;
   }
 
   .clear-all-btn:hover {
-    border-color: #ef4444;
-    color: #ef4444;
+    border-color: var(--error-color);
+    color: var(--error-color);
   }
 </style>

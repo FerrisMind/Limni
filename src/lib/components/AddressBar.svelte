@@ -144,32 +144,32 @@
   .address-bar {
     flex: 1;
     width: 100%;
-    margin: var(--spacing-xs) 0; /* 4px отступы сверху и снизу согласно 4px сетке */
+    margin: var(--spacing-4px) 0; /* 4px отступы сверху и снизу согласно 4px сетке */
   }
 
   .address-input-container {
     display: flex;
     align-items: center;
     background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--btn-border-radius);
+    border: var(--input-border-width-1px) solid var(--border-color);
+    border-radius: var(--input-border-radius-4px);
     padding: 0;
-    height: 32px;
-    margin: var(--spacing-xs) 0; /* 4px отступы сверху и снизу согласно 4px сетке */
+    height: var(--input-height-32px);
+    margin: var(--spacing-4px) 0; /* 4px отступы сверху и снизу согласно 4px сетке */
   }
 
   .address-input-container:focus-within {
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.2);
+    box-shadow: 0 0 0 var(--input-focus-outline-2px) var(--accent-color-light);
   }
 
   .address-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 var(--spacing-sm); /* 8px горизонтальные отступы */
+    padding: 0 var(--spacing-8px); /* 8px горизонтальные отступы */
     color: var(--text-primary);
-    font-size: 16px;
+    font-size: var(--icon-size-16px);
   }
 
   .address-input {
@@ -177,8 +177,8 @@
     border: none;
     background: transparent;
     color: var(--text-primary);
-    font-size: 14px;
-    padding: var(--spacing-sm) var(--spacing-xs); /* 8px вертикально, 4px горизонтально */
+    font-size: var(--font-size-14px);
+    padding: var(--spacing-8px) var(--spacing-4px); /* 8px вертикально, 4px горизонтально */
     outline: none;
     font-family: inherit;
   }
@@ -194,16 +194,16 @@
     background: transparent;
     border: none;
     color: var(--text-primary);
-    padding: var(--spacing-sm); /* 8px отступы согласно переменной */
+    padding: var(--spacing-8px); /* 8px отступы согласно переменной */
     cursor: default;
-    border-radius: var(--btn-border-radius);
-    margin-right: var(--spacing-xs); /* 4px правый отступ согласно 4px сетке */
-    font-size: 14px;
+    border-radius: var(--button-border-radius-8px);
+    margin-right: var(--spacing-4px); /* 4px правый отступ согласно 4px сетке */
+    font-size: var(--font-size-14px);
   }
 
   .go-btn:hover {
     background: var(--btn-bg-hover);
     color: var(--text-primary);
-    padding: var(--spacing-sm); /* Согласованный размер ховера */
+    padding: var(--spacing-8px); /* Согласованный размер ховера */
   }
 </style>

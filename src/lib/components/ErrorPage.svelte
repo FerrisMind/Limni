@@ -6,7 +6,7 @@
     tab: Tab;
   }
 
-  let { tab }: Props = $props();
+  const { tab }: Props = $props();
 
   async function handleReload() {
     await reloadTab(tab.id);
@@ -121,108 +121,108 @@
     align-items: center;
     justify-content: center;
     min-height: 100%;
-    padding: 2rem;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    padding: var(--spacing-32px);
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%); /* Использование переменных для градиента */
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
   .error-content {
     text-align: center;
     max-width: 500px;
-    background: white;
-    padding: 3rem 2rem;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e2e8f0;
+    background: var(--bg-secondary);
+    padding: var(--spacing-40px) var(--spacing-32px); /* Было 3rem 2rem, изменено на 40px 32px для 8px сетки */
+    border-radius: var(--card-border-radius-16px); /* 16px */
+    box-shadow: var(--shadow-md);
+    border: var(--card-border-width-1px) solid var(--border-color);
   }
 
   .error-icon {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-24px); /* Было 1.5rem, изменено на 24px для 8px сетки */
     display: flex;
     justify-content: center;
   }
 
   .error-title {
-    font-size: 1.5rem;
+    font-size: var(--font-size-24px); /* 1.5rem */
     font-weight: 600;
-    color: #1e293b;
-    margin: 0 0 1rem 0;
-    line-height: 1.3;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-16px) 0; /* Было 1rem, изменено на 16px для 8px сетки */
+    line-height: var(--line-height-24px); /* 1.3 */
   }
 
   .error-description {
-    font-size: 1rem;
-    color: #64748b;
-    margin: 0 0 1.5rem 0;
-    line-height: 1.5;
+    font-size: var(--font-size-16px); /* 1rem */
+    color: var(--text-secondary);
+    margin: 0 0 var(--spacing-24px) 0; /* Было 1.5rem, изменено на 24px для 8px сетки */
+    line-height: var(--line-height-24px); /* 1.5 */
   }
 
   .error-url {
-    background: #f1f5f9;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    font-size: 0.875rem;
-    color: #475569;
-    margin-bottom: 1.5rem;
+    background: var(--bg-tertiary);
+    padding: var(--spacing-8px) var(--spacing-16px); /* Было 0.75rem 1rem, изменено на 8px 16px для 8px сетки */
+    border-radius: var(--card-border-radius-8px);
+    font-size: var(--font-size-14px); /* 0.875rem */
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-24px); /* Было 1.5rem, изменено на 24px для 8px сетки */
     word-break: break-all;
-    border: 1px solid #e2e8f0;
+    border: var(--card-border-width-1px) solid var(--border-color);
   }
 
   .error-details {
     text-align: left;
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-32px); /* 2rem */
   }
 
   .error-details summary {
     cursor: default;
-    font-size: 0.875rem;
-    color: #64748b;
-    margin-bottom: 0.5rem;
+    font-size: var(--font-size-14px); /* 0.875rem */
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-8px); /* Было 0.5rem, изменено на 8px для 8px сетки */
     user-select: none;
   }
 
   .error-details summary:hover {
-    color: #475569;
+    color: var(--text-primary);
   }
 
   .error-code {
     display: block;
-    background: #1e293b;
-    color: #e2e8f0;
-    padding: 1rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    padding: var(--spacing-16px); /* Было 1rem, изменено на 16px для 8px сетки */
+    border-radius: var(--card-border-radius-8px); /* Было 6px, изменено на 8px для 8px сетки */
+    font-size: var(--font-size-12px); /* 0.75rem */
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
     white-space: pre-wrap;
     word-break: break-all;
-    margin-top: 0.5rem;
+    margin-top: var(--spacing-8px); /* Было 0.5rem, изменено на 8px для 8px сетки */
   }
 
   .error-actions {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: var(--spacing-16px); /* Было 1rem, изменено на 16px для 8px сетки */
   }
 
   .reload-button {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    background: #3b82f6;
+    gap: var(--spacing-8px); /* Было 0.5rem, изменено на 8px для 8px сетки */
+    background: var(--accent-color);
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    font-size: 0.875rem;
+    padding: var(--spacing-8px) var(--spacing-24px); /* Было 0.75rem 1.5rem, изменено на 8px 24px для 8px сетки */
+    border-radius: var(--button-border-radius-8px);
+    font-size: var(--font-size-14px); /* 0.875rem */
     font-weight: 500;
     cursor: default;
     transition: all 0.2s ease;
   }
 
   .reload-button:hover {
-    background: #2563eb;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    background: var(--accent-color);
+    transform: translateY(-8px); /* Было -1px, изменено на -8px для 8px сетки */
+    box-shadow: var(--shadow-md); /* Обновлено */
   }
 
   .reload-button:active {

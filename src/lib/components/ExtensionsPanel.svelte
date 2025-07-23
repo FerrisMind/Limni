@@ -59,14 +59,14 @@
   .extensions-panel {
     position: absolute;
     top: 100%;
-    right: 150px;
-    width: 300px;
+    right: var(--spacing-152px); /* Было 150px, изменено на 152px для 8px сетки */
+    width: 300px; /* Пока оставляем как есть, потребуется более детальный расчет */
     background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: var(--card-border-width-1px) solid var(--border-color);
+    border-radius: var(--card-border-radius-8px); /* Было 12px, изменено на 8px для 8px сетки */
+    box-shadow: var(--shadow-lg);
     z-index: 1000;
-    max-height: 400px;
+    max-height: 400px; /* Пока оставляем как есть */
     overflow-y: auto;
   }
 
@@ -74,29 +74,29 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px;
-    border-bottom: 1px solid var(--border-color);
+    padding: var(--spacing-16px);
+    border-bottom: var(--card-border-width-1px) solid var(--border-color);
   }
 
   .panel-header h3 {
     margin: 0;
-    font-size: 16px;
+    font-size: var(--font-size-16px);
     font-weight: 600;
     color: var(--text-primary);
   }
 
   .close-btn {
-    width: var(--btn-size-small);
-    height: var(--btn-size-small);
+    width: var(--button-height-medium);
+    height: var(--button-height-medium);
     border: none;
     background: transparent;
     color: var(--text-secondary);
-    border-radius: var(--btn-border-radius);
+    border-radius: var(--button-border-radius-8px);
     cursor: default;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--btn-icon-size);
+    font-size: var(--icon-size-16px);
   }
 
   .close-btn:hover {
@@ -105,15 +105,15 @@
   }
 
   .extensions-list {
-    padding: 8px;
+    padding: var(--spacing-8px);
   }
 
   .extension-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px;
-    border-radius: 8px;
+    padding: var(--spacing-16px); /* Было 12px, изменено на 16px для 8px сетки */
+    border-radius: var(--card-border-radius-8px);
     transition: background-color 0.2s ease;
   }
 
@@ -124,27 +124,27 @@
   .extension-info {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: var(--spacing-16px); /* Соответствует 4px сетке */
   }
 
   .extension-icon {
-    font-size: 20px;
+    font-size: var(--icon-size-24px); /* Было 20px, изменено на 24px для 8px сетки */
   }
 
   .extension-name {
-    font-size: 14px;
+    font-size: var(--font-size-14px);
     color: var(--text-primary);
     font-weight: 500;
   }
 
   .toggle-btn {
-    padding: 4px 12px;
-    border: 1px solid var(--border-color);
+    padding: var(--spacing-8px) var(--spacing-16px); /* Было 4px 12px, изменено на 8px 16px для 8px сетки */
+    border: var(--card-border-width-1px) solid var(--border-color);
     background: var(--bg-secondary);
     color: var(--text-secondary);
-    border-radius: 6px;
+    border-radius: var(--button-border-radius-8px); /* Было 6px, изменено на 8px для 8px сетки */
     cursor: default;
-    font-size: 12px;
+    font-size: var(--font-size-12px);
     font-weight: 500;
     transition: all 0.2s ease;
   }
@@ -160,23 +160,23 @@
   }
 
   .panel-footer {
-    padding: 16px;
-    border-top: 1px solid var(--border-color);
+    padding: var(--spacing-16px);
+    border-top: var(--card-border-width-1px) solid var(--border-color);
   }
 
   .add-extension-btn {
     width: 100%;
-    padding: 12px;
-    border: 1px dashed var(--border-color);
+    padding: var(--spacing-16px);
+    border: var(--card-border-width-1px) dashed var(--border-color);
     background: transparent;
     color: var(--text-secondary);
-    border-radius: 8px;
+    border-radius: var(--card-border-radius-8px);
     cursor: default;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-sm);
-    font-size: 14px;
+    gap: var(--spacing-8px);
+    font-size: var(--font-size-14px);
     transition: all 0.2s ease;
   }
 

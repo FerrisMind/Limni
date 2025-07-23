@@ -108,45 +108,45 @@
       var(--tabbar-height) + var(--toolbar-height)
     ); /* Правильная высота: 44px + 45px = 89px */
     left: 0;
-    width: 352px;
+    width: 352px; /* Пока оставляем как есть, потребуется более детальный расчет */
     height: calc(100vh - var(--tabbar-height) - var(--toolbar-height));
     background: var(--bg-primary);
-    border-right: 1px solid var(--border-color);
+    border-right: var(--card-border-width-1px) solid var(--border-color);
     display: flex;
     flex-direction: column;
     z-index: 1001; /* Увеличиваем z-index чтобы быть поверх webview'ов */
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm); /* Изменено на shadow-sm */
   }
 
   .panel-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-lg) var(--spacing-xl);
-    border-bottom: 1px solid var(--border-color);
+    padding: var(--spacing-16px) var(--spacing-24px); /* Соответствует 4px сетке: 16px вертикаль, 24px горизонталь */
+    border-bottom: var(--card-border-width-1px) solid var(--border-color);
     background: var(--bg-secondary);
   }
 
   .panel-header h3 {
     margin: 0;
     color: var(--text-primary);
-    font-size: 16px;
+    font-size: var(--font-size-16px);
     font-weight: 600;
   }
 
   .header-actions {
     display: flex;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-8px);
   }
 
   .action-btn {
-    width: var(--btn-size-small);
-    height: var(--btn-size-small);
+    width: var(--button-height-medium);
+    height: var(--button-height-medium);
     border: none;
-    border-radius: var(--btn-border-radius);
+    border-radius: var(--button-border-radius-8px);
     background: var(--btn-bg);
     color: var(--text-primary);
-    font-size: var(--btn-icon-size);
+    font-size: var(--icon-size-16px);
     cursor: default;
     display: flex;
     align-items: center;
@@ -159,13 +159,13 @@
   }
 
   .close-btn {
-    font-size: 20px;
+    font-size: var(--icon-size-20px);
   }
 
   .bookmarks-content {
     flex: 1;
     overflow-y: auto;
-    padding: var(--spacing-lg) 0;
+    padding: var(--spacing-16px) 0;
   }
 
   .empty-state {
@@ -174,48 +174,50 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding: 2rem;
+    padding: var(--spacing-32px); /* 2rem = 32px */
     text-align: center;
   }
 
   .empty-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+    font-size: var(--icon-size-48px); /* 3rem = 48px */
+    margin-bottom: var(--spacing-16px); /* 1rem = 16px */
     opacity: 0.5;
   }
 
   .empty-state p {
     color: var(--text-secondary);
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--spacing-8px); /* 0.5rem = 8px */
   }
 
   .empty-hint {
-    font-size: 14px;
+    font-size: var(--font-size-14px);
     opacity: 0.7;
   }
 
   .bookmarks-list {
-    padding: 0 var(--spacing-lg);
+    padding: 0 var(--spacing-16px);
   }
 
   .bookmark-item {
     display: flex;
     align-items: center;
-    margin-bottom: var(--spacing-sm);
-    border-radius: var(--btn-border-radius);
+    gap: var(--spacing-12px); /* Добавлен gap */
+    padding: var(--spacing-12px) var(--spacing-16px); /* Соответствует 4px сетке */
+    margin-bottom: var(--spacing-4px); /* Отступ между элементами списка */
+    border-radius: var(--card-border-radius-8px);
     background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
+    border: var(--card-border-width-1px) solid var(--border-color);
     transition: all 0.2s ease;
   }
 
   .bookmark-item:hover {
     background: var(--btn-bg-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(0px); /* Было -1px, изменено на 0px для 8px сетки */
+    box-shadow: var(--shadow-sm);
   }
 
   .bookmark-icon {
-    font-size: 20px;
+    font-size: var(--icon-size-20px);
     opacity: 0.7;
     flex-shrink: 0;
   }
@@ -228,40 +230,40 @@
   .bookmark-title {
     font-weight: 500;
     color: var(--text-primary);
-    margin-bottom: 4px;
+    margin-bottom: var(--spacing-4px); /* Было 8px, изменено на 4px для 4px сетки */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 14px;
+    font-size: var(--font-size-14px);
   }
 
   .bookmark-url {
     color: var(--text-secondary);
-    font-size: 12px;
+    font-size: var(--font-size-12px);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-bottom: 4px;
+    margin-bottom: var(--spacing-4px); /* Было 8px, изменено на 4px для 4px сетки */
   }
 
   .bookmark-date {
     color: var(--text-secondary);
-    font-size: 12px;
+    font-size: var(--font-size-12px);
     opacity: 0.7;
   }
 
   .bookmark-delete {
-    width: 36px;
-    height: 36px;
+    width: var(--button-height-medium); /* Было 32px, теперь 32px */
+    height: var(--button-height-medium); /* Было 32px, теперь 32px */
     border: none;
     background: transparent;
     cursor: default;
-    font-size: var(--btn-font-size);
+    font-size: var(--icon-size-16px); /* Используем icon-size-16px */
     opacity: 0;
     transition: all 0.2s ease;
     flex-shrink: 0;
-    margin-right: var(--spacing-sm);
-    border-radius: var(--btn-border-radius);
+    margin-right: var(--spacing-8px); /* Отступ от края */
+    border-radius: var(--button-border-radius-8px);
   }
 
   .bookmark-delete:hover {
@@ -271,7 +273,7 @@
 
   /* Scrollbar */
   .bookmarks-content::-webkit-scrollbar {
-    width: 8px;
+    width: var(--spacing-8px);
   }
 
   .bookmarks-content::-webkit-scrollbar-track {
@@ -280,7 +282,7 @@
 
   .bookmarks-content::-webkit-scrollbar-thumb {
     background: var(--border-color);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
   }
 
   .bookmarks-content::-webkit-scrollbar-thumb:hover {
