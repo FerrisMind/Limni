@@ -1,4 +1,4 @@
-# <img src=".github/splash-ptbr.png" alt="Limni App Icon" style="align: center;"
+# <img src=".github/splash-ptbr.png" alt="Limni App Icon"/>
 
 ---
 
