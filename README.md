@@ -1,5 +1,9 @@
 # Limni - Native Internet Navigator
 
+<p align="center">
+  <img src="src-tauri/icons/icon.png" alt="Limni App Icon" width="128" height="128">
+</p>
+
 ---
 
 [English](https://github.com/FerrisMind/Limni/blob/main/README.md) | [Русский](https://github.com/FerrisMind/Limni/blob/main/README-RU.md) | [Português (BR)](https://github.com/FerrisMind/Limni/blob/main/README-PT-BR.md)
