@@ -1,4 +1,4 @@
-# <img src="src-tauri/icons/icon.png" alt="Limni App Icon" width="128" height="128" style="vertical-align: middle;"> Limni - Navegador de Internet Nativo
+# <img src=".github/splash-ptbr.png" alt="Limni App Icon" style="align: center;"
 
 ---
 
