@@ -1,8 +1,4 @@
-# Limni - Navegador Nativo de Internet
-
-<p align="center">
-  <img src="src-tauri/icons/icon.png" alt="Limni App Icon" width="128" height="128">
-</p>
+# <img src="src-tauri/icons/icon.png" alt="Limni App Icon" width="32" height="32"> Limni - Navegador de Internet Nativo
 
 ---
 
